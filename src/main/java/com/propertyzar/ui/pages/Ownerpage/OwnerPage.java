@@ -18,7 +18,12 @@ public class OwnerPage extends BasePage {
     private static final String LOCATOR_SAVE ="//button[span[text()='Save']]";
     private static final String LOCATOR_CREDENTIAL_POPUP = "//*[contains(@role,'dialog')]";
     private static final String LOCATOR_YES_POPUP = "//button[span[text()='Yes']]";
-    private static final String LOCATOR_TOAST_MESSAGE ="//*[text()='Login Successful']";
+    private static final String LOCATOR_TOAST_MESSAGE ="//*[text()='Owner Created Successfully']";
+    private static final String LOCATOR_ADDRESS1 = "//input[@id='addressLineOne']";
+    private static final String LOCATOR_CITY = "[data-testid='city']";
+    private static final String LOCATOR_STATE = "[id='state']";
+    private static final String LOCATOR_STATE_VALUE = "//*[@id='state-listbox']";
+    private static final String LOCATOR_ZIP = "[id='zip']";
 
     public OwnerPage(WebDriver<?> webDriver) {
         super(webDriver);
@@ -48,6 +53,19 @@ public class OwnerPage extends BasePage {
     public void enterLocation(String location) {
         clickElement(LOCATOR_LOCATION, " Location Button");
         setTextElement(LOCATOR_LOCATION, location, "Enter location ");
+
+    }
+    public void enterAddress1(String address1){
+        setTextElement(LOCATOR_ADDRESS1,address1,"Address1");
+    }
+    public void enterCity(String city){
+        setTextElement(LOCATOR_CITY,city,"City");
+    }
+    public void selectState(String state){
+        selectDropdownData(LOCATOR_STATE,LOCATOR_STATE_VALUE,state);
+    }
+    public void enterZip(String zip){
+        setTextElement(LOCATOR_ZIP,zip,"Zip");
     }
     public void clickSave() {
         clickElement(LOCATOR_SAVE, "Click Save button");

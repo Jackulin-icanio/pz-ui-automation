@@ -8,7 +8,10 @@
      "lastName" : "LastName",
       "email" : "Email",
        "alternativeEmail" : "Alternative Email",
-        "location" : "Propel Industries Private Limited, Trichy Road, Sagaya Annai Nagar, Sulur, Tamil Nadu, India"
+    "address1": "11 car street",
+    "city": "Chennai",
+    "state": "Grand Cayman",
+    "zip": "600678"
 
   }
 }

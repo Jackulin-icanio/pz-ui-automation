@@ -39,7 +39,7 @@ public class OwnerTest extends BaseTest {
     }
 
     @Test(testName = "Owner Creation",dataProvider = OwnerData.CREATE_DATA, dataProviderClass = OwnerData.class,  priority = 1)
-    public void createOwner(String firstName,String lastName,String email,String alternativeEmail,String location) {
+    public void createOwner(String firstName,String lastName,String email,String alternativeEmail,String address1,String city,String state,String zip) {
         try {
             ownerPage.clickOwnersSideNav();
             ownerPage.clickNewOwnerButton();
@@ -51,7 +51,10 @@ public class OwnerTest extends BaseTest {
             ownerPage.enterEmail(randomEmail);
             String randomAlternativeEmail = ownerPage.randomEmail(alternativeEmail, "yopmail.com");
             ownerPage.enterAlternativeEmail(randomAlternativeEmail);
-            ownerPage.enterLocation(location);
+            ownerPage.enterAddress1(address1);
+            ownerPage.enterCity(city);
+            ownerPage.selectState(state);
+            ownerPage.enterZip(zip);
             ownerPage.clickSave();
             Assert.assertTrue(ownerPage.isPopupVisible(), "Credential Popup is not displayed");
             ownerPage.clickYes();
