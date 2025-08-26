@@ -111,4 +111,6 @@ public class Config {
     @PropertyKey(ENV_PREFIX + "property-json-file")
     private String propertyFile;
 
+    @PropertyKey(ENV_PREFIX + "owner-json-file")
+    private String ownerFile;
 }

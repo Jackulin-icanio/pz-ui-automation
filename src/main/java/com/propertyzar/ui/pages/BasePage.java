@@ -36,7 +36,7 @@ public class BasePage {
     private static final int TIMEOUT = Integer.parseInt(ConfigManager.getConfig().getTimeOut());
 
     public static final String LOCATOR_PARTY_BUTTON = "ul.navbar-nav.top-nav li a#Party span";
-    public static final String LOCATOR_PARTY_IFRAME = "frame[name='navbar']";
+//    public static final String LOCATOR_PARTY_IFRAME = "frame[name='navbar']";
     public static final String LOCATOR_NAVBAR_MENUS = "//ul[@id='navigation']//li/a[@id='Party']";
 
     public static final String FRAME_CONTAINER = "frame[name='container']";
@@ -878,10 +878,42 @@ public class BasePage {
         log.info("RandomName: " + name);
         return name;
     }
+    public String randomEmail(String prefix, String domain) {
+        String letters = "abcdefghijklmnopqrstuvwxyz";
+        Random random = new Random();
+
+        // Random name length between 6–10
+        int length = 6 + random.nextInt(5);
+        StringBuilder name = new StringBuilder();
+
+        for (int i = 0; i < length; i++) {
+            name.append(letters.charAt(random.nextInt(letters.length())));
+        }
+
+        // Optionally append random number for uniqueness
+        name.append(random.nextInt(100));
+
+        String email = name.toString() + "@" + domain.toLowerCase();
+
+        log.info("RandomEmail: " + email);
+        return email;
+    }
+
+    /**
+     * Generates a random 9-digit Tax ID.
+     *
+     * @return A randomly generated integer representing a Tax ID.
+     */
+    public int randomTaxID() {
+        Random random = new Random();
+        int taxId = 100_000_000 + random.nextInt(900_000_000);
+        log.info("TaxId: " + taxId);
+        return taxId;
+    }
 
     public boolean isNavBarMenuVisible() {
         getWebDriver().waitForLoad(WebDriver.LoadType.DOMCONTENTLOADED);
-        getWebDriver().switchToFrames(LOCATOR_PARTY_IFRAME);
+      //  getWebDriver().switchToFrames(LOCATOR_PARTY_IFRAME);
         return isElementPresent(LOCATOR_NAVBAR_MENUS);
     }
 
