@@ -8,6 +8,7 @@
  */
 
 package com.propertyzar.ui.pages.login;
+
 import com.propertyzar.ui.base.WebDriver;
 import com.propertyzar.ui.pages.BasePage;
 
@@ -17,7 +18,6 @@ public class LoginPage extends BasePage {
     private static final String LOCATOR_LOGIN_BUTTON = "[data-testid='loginBtn']";
     private static final String LOCATOR_HOMESCREEN_VISIBLE = "//*[text()='Open Work Orders']";
     private static final String LOCATOR_LOGIN_MESSAGE_VISIBLE = "//*[text()='Login Successful']";
-
 
     public LoginPage(WebDriver<?> webDriver) {
         super(webDriver);
@@ -33,13 +33,14 @@ public class LoginPage extends BasePage {
     }
 
     public void setUserName(String email) {
-        setTextElement(LOCATOR_USER_NAME, email, "Login name");
+        setTextElement(LOCATOR_USER_NAME, email, "Email");
+    }
+
+    public boolean isMessageVisible() {
+        return isElementPresent(LOCATOR_LOGIN_MESSAGE_VISIBLE);
     }
 
     public boolean isHomeScreenVisible() {
         return isElementPresent(LOCATOR_HOMESCREEN_VISIBLE);
-    }
-    public boolean isMessageVisible() {
-        return isElementPresent(LOCATOR_LOGIN_MESSAGE_VISIBLE);
     }
 }

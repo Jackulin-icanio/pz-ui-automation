@@ -1,0 +1,14 @@
+{
+  "login": {
+    "email": "pzdevtest@yopmail.com",
+    "password": "login.password"
+  },
+  "createProperty": {
+    "propertyName": "Property Name",
+    "propertyType": "Commercial",
+    "address1": "11 car street",
+    "city": "Chennai",
+    "state": "Grand Cayman",
+    "zip": "600678"
+  }
+}

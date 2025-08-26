@@ -30,7 +30,7 @@ public class BasePage {
 
     public static final int MID_LEVEL_TIMEOUT = Integer.parseInt(ConfigManager.getConfig().getMidLevelTimeout());
     public static final int MAX_RETRY_ATTEMPTS = Integer.parseInt(ConfigManager.getConfig().getMaxElementAttempts());
-    private static final String LOCATOR_DROPDOWN_DATA = "%s//*[@title='%s']";
+    private static final String LOCATOR_DROPDOWN_DATA = "%s//*[text()='%s']";
     private static final String VERIFY_CHECKED_STATE = "checked";
     private static final int DEFAULT_TIMEOUT = Integer.parseInt(ConfigManager.getConfig().getDefaultTimeOut());
     private static final int TIMEOUT = Integer.parseInt(ConfigManager.getConfig().getTimeOut());
@@ -739,7 +739,7 @@ public class BasePage {
      * @param dropdownData  Data to select
      * @throws DCMException if dropdown selection fails
      */
-    public void selectDropdownData(String dropdownXpath, String dropdownData) {
+    public void selectDropdownData(String dropdownXpath, String dropdownDataXpath, String dropdownData) {
         validateXpath(dropdownXpath);
         if (dropdownData == null || dropdownData.isEmpty()) {
             throw new IllegalArgumentException("Dropdown data cannot be null or empty");
@@ -747,7 +747,7 @@ public class BasePage {
 
         try {
             clickElement(dropdownXpath, "Dropdown");
-            String xPath = String.format(LOCATOR_DROPDOWN_DATA, dropdownXpath, dropdownData);
+            String xPath = String.format(LOCATOR_DROPDOWN_DATA, dropdownDataXpath, dropdownData);
             clickElement(xPath, "Dropdown Data");
             log.info("Selected dropdown data: {}", dropdownData);
         } catch (Exception e) {
@@ -879,28 +879,6 @@ public class BasePage {
         return name;
     }
 
-    /**
-     * Generates a random 9-digit Tax ID.
-     *
-     * @return A randomly generated integer representing a Tax ID.
-     */
-    public int randomTaxID() {
-        Random random = new Random();
-        int taxId = 100_000_000 + random.nextInt(900_000_000);
-        log.info("TaxId: " + taxId);
-        return taxId;
-    }
-
-    public void scrollIntoView(String scrollElementLocator) {
-        Element<?, ?> selectElement = getElement(scrollElementLocator);
-        selectElement.scrollIntoView();
-    }
-
-
-    public boolean isPartyPageDisplayed() {
-        return isElementPresent(LOCATOR_CREATE_PERSON_LINK);
-    }
-
     public boolean isNavBarMenuVisible() {
         getWebDriver().waitForLoad(WebDriver.LoadType.DOMCONTENTLOADED);
         getWebDriver().switchToFrames(LOCATOR_PARTY_IFRAME);
@@ -912,11 +890,6 @@ public class BasePage {
         getWebDriver().switchToFrames(FRAME_SIDE_BAR);
         return isElementPresent(LOCATOR_LEFT_SIDE_NAVE_BAR);
     }
-
-    public boolean isDcmAdminPageDisplayed(){
-        return isElementPresent(LOCATOR_DCM_ADMIN_SEARCH_BUTTON);
-    }
-
 
     private void performNavigation(String iframeLocator, String buttonLocator, String buttonName, String subpageLocator) {
         int attempts = 0;
@@ -941,88 +914,5 @@ public class BasePage {
         if (attempts == MAX_RETRY_ATTEMPTS) {
             throw new RuntimeException("Failed to execute navigation logic for " + buttonName + " after " + MAX_RETRY_ATTEMPTS + " attempts.");
         }
-    }
-
-    public void clickParty() {
-        performNavigation(LOCATOR_PARTY_IFRAME, LOCATOR_PARTY_BUTTON, "Party", LOCATOR_CREATE_PERSON_LINK);
-    }
-
-    public void clickHierarchy() {
-        performNavigation(LOCATOR_PARTY_IFRAME, LOCATOR_HIERARCHY_BUTTON, "Hierarchy", LOCATOR_NEW_HIERARCHY);
-    }
-
-    public void clickDcmAdmin() {
-        performNavigation(LOCATOR_PARTY_IFRAME, LOCATOR_DCM_ADMIN_BUTTON, "Dcm admin", LOCATOR_DCM_ADMIN_SEARCH_BUTTON);
-    }
-
-    public void clickCompensation(){
-        performNavigation(LOCATOR_PARTY_IFRAME, LOCATOR_COMPENSATION_BUTTON, "Compensation", LOCATOR_COMPENSATION_SEARCH_BUTTON);
-    }
-
-    public void clickContractKit() {
-        int attempts = 0;
-        while (attempts < MAX_RETRY_ATTEMPTS) {
-            try {
-                getWebDriver().switchToFrames(FRAME_SIDE_BAR);
-                clickElement(LOCATOR_CONTRACT_KIT, "Click contract kit");
-                getWebDriver().waitForLoad(WebDriver.LoadType.DOMCONTENTLOADED);
-                clickElement(LOCATOR_CONTRACT_KIT_INFO, "Click contract kit info");
-                break;
-            } catch (Exception e) {
-                log.error("Error occurred in clickContractKit method. Attempting refresh. Attempt: {}", attempts + 1, e);
-                refresh();
-                attempts++;
-            }
-        }
-        if (attempts == MAX_RETRY_ATTEMPTS) {
-            throw new RuntimeException("Failed to execute clickContractKit logic after " + MAX_RETRY_ATTEMPTS + " attempts.");
-        }
-    }
-
-    public void clickSubProductSearch() {
-        int attempts = 0;
-        while (attempts < MAX_RETRY_ATTEMPTS) {
-            try {
-                getWebDriver().switchToFrames(LOCATOR_SUB_PRODUCT_SEARCH_FRAME);
-                clickElement(LOCATOR_SUB_PRODUCT_SEARCH, "Sub product search");
-                getWebDriver().waitForLoad(WebDriver.LoadType.DOMCONTENTLOADED);
-                break;
-            } catch (Exception e) {
-                log.error("Error occurred in clickSubProductSearch method. Attempting refresh. Attempt: {}", attempts + 1, e);
-                refresh();
-                attempts++;
-            }
-        }
-        if (attempts == MAX_RETRY_ATTEMPTS) {
-            throw new RuntimeException("Failed to execute clickSubProductSearch logic after " + MAX_RETRY_ATTEMPTS + " attempts.");
-        }
-    }
-
-    public void clickValidateButton() {
-        getWebDriver().switchToFrames(FRAME_CONTAINER, FRAME_NOCACHE_FRAME, FRAME_PROP_PAGE);
-        clickElement(LOCATOR_VALIDATE_BUTTON, "Validate button");
-        getWebDriver().waitForLoad();
-    }
-
-    public void clickCancelButton() {
-        getWebDriver().switchToFrames(FRAME_CONTAINER, FRAME_NOCACHE_FRAME, FRAME_PROP_PAGE);
-        clickElement(LOCATOR_CANCEL_BUTTON, "Cancel button");
-        getWebDriver().waitForLoad();
-    }
-
-    public void clickSaveButton() {
-        getWebDriver().switchToFrames(FRAME_CONTAINER, FRAME_NOCACHE_FRAME, FRAME_PROP_PAGE);
-        clickElement(LOCATOR_SAVE_BUTTON, "Save button");
-    }
-
-    public void clickValidateButtonWithCache() {
-        getWebDriver().switchToFrames(FRAME_CONTAINER, FRAME_CACHE2, FRAME_PROP_PAGE);
-        clickElement(LOCATOR_VALIDATE_BUTTON, "Validate button");
-        getWebDriver().waitForLoad();
-    }
-
-    public void clickSaveButtonWithCache() {
-        getWebDriver().switchToFrames(FRAME_CONTAINER, FRAME_CACHE2, FRAME_PROP_PAGE);
-        clickElement(LOCATOR_SAVE_BUTTON, "Save button");
     }
 }

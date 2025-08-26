@@ -71,25 +71,6 @@ public class Config {
     @PropertyKey(ENV_PREFIX + "max-element-attempts")
     private String maxElementAttempts;
 
-    @PropertyKey(ENV_PREFIX + "login-json-file")
-    private String loginFile;
-
-    @PropertyKey(ENV_PREFIX + "person-json-file")
-    private String personFile;
-
-    @PropertyKey(ENV_PREFIX + "contractKit-json-file")
-    private String contractKitFile;
-
-    @PropertyKey(ENV_PREFIX + "components-json-file")
-    private String componentsFile;
-
-    @PropertyKey(ENV_PREFIX + "client-json-file")
-    private String clientFile;
-
-    @PropertyKey(ENV_PREFIX + "course-json-file")
-    private String courseFile;
-
-
     @PropertyKey(ENV_PREFIX + "low_level-timeout")
     private String lowLevelTimeout;
 
@@ -120,43 +101,14 @@ public class Config {
     @PropertyKey(ENV_PREFIX + "report-title")
     private String reportTitle;
 
-    @PropertyKey(ENV_PREFIX + "location-json-file")
-    private String locationFile;
-
-    @PropertyKey(ENV_PREFIX + "newProduct-json-file")
-    private String newProductSearchFile;
-
-    @PropertyKey(ENV_PREFIX + "newProduct-json-file")
-    private String productSearchFile;
-
-    @PropertyKey(ENV_PREFIX + "dcmAdminEnums-json-file")
-    private String dcmAdminEnumsFile;
-
-    @PropertyKey(ENV_PREFIX + "productEligibility-json-file")
-    private String productEligibilityFile;
-
-    @PropertyKey(ENV_PREFIX + "productQuota-json-file")
-    private String productQuotaFile;
-
-    @PropertyKey(ENV_PREFIX + "organizationParty-json-file")
-    private String organizationPartyFile;
-
-    @PropertyKey(ENV_PREFIX + "productHierarchy-json-file")
-    private String productHierarchyFile;
-
-    @PropertyKey(ENV_PREFIX + "rootProductPosition-json-file")
-    private String rootProductPositionFile;
-
-    @PropertyKey(ENV_PREFIX + "commissions-json-file")
-    private String commissionsFile;
-
     @PropertyKey(ENV_PREFIX + "max-suite-retry-attempts")
     private String maxSuiteRetryAttempts;
 
-    @PropertyKey(ENV_PREFIX + "schedule-json-file")
-    private String scheduleFile;
+    //Data JSON Files
+    @PropertyKey(ENV_PREFIX + "login-json-file")
+    private String loginFile;
 
-    @PropertyKey(ENV_PREFIX + "bonus-json-file")
-        private String bonusFile;
+    @PropertyKey(ENV_PREFIX + "property-json-file")
+    private String propertyFile;
 
 }

@@ -15,6 +15,7 @@ package com.propertyzar.ui.tests;
 import lombok.extern.slf4j.Slf4j;
         import com.propertyzar.ui.pages.login.LoginPage;
 import com.propertyzar.ui.security.SecurityManager;
+import org.testng.Assert;
 
 @Slf4j
 public class CommonTest {
@@ -23,7 +24,8 @@ public class CommonTest {
         loginPage.setUserName(loginData[0][0].toString());
         loginPage.setPassword(SecurityManager.getInstance().getValue(loginData[0][1].toString()));
         loginPage.clickLogin();
-        loginPage.isNavBarMenuVisible();
+        Assert.assertTrue(loginPage.isMessageVisible(), "Login Message is not displayed");
+        Assert.assertTrue(loginPage.isHomeScreenVisible(), "Home screen is not displayed");
     }
 
 }
