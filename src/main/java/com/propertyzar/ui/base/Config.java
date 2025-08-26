@@ -83,6 +83,9 @@ public class Config {
     @PropertyKey(ENV_PREFIX + "components-json-file")
     private String componentsFile;
 
+    @PropertyKey(ENV_PREFIX + "owner-json-file")
+    private String ownerFile;
+
     @PropertyKey(ENV_PREFIX + "client-json-file")
     private String clientFile;
 

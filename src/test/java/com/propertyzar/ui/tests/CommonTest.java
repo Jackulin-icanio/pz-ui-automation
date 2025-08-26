@@ -23,7 +23,6 @@ public class CommonTest {
         loginPage.setUserName(loginData[0][0].toString());
         loginPage.setPassword(SecurityManager.getInstance().getValue(loginData[0][1].toString()));
         loginPage.clickLogin();
-        loginPage.isNavBarMenuVisible();
     }
 
 }

@@ -36,7 +36,7 @@ public class BasePage {
     private static final int TIMEOUT = Integer.parseInt(ConfigManager.getConfig().getTimeOut());
 
     public static final String LOCATOR_PARTY_BUTTON = "ul.navbar-nav.top-nav li a#Party span";
-    public static final String LOCATOR_PARTY_IFRAME = "frame[name='navbar']";
+//    public static final String LOCATOR_PARTY_IFRAME = "frame[name='navbar']";
     public static final String LOCATOR_NAVBAR_MENUS = "//ul[@id='navigation']//li/a[@id='Party']";
 
     public static final String FRAME_CONTAINER = "frame[name='container']";
@@ -878,6 +878,26 @@ public class BasePage {
         log.info("RandomName: " + name);
         return name;
     }
+    public String randomEmail(String prefix, String domain) {
+        String letters = "abcdefghijklmnopqrstuvwxyz";
+        Random random = new Random();
+
+        // Random name length between 6–10
+        int length = 6 + random.nextInt(5);
+        StringBuilder name = new StringBuilder();
+
+        for (int i = 0; i < length; i++) {
+            name.append(letters.charAt(random.nextInt(letters.length())));
+        }
+
+        // Optionally append random number for uniqueness
+        name.append(random.nextInt(100));
+
+        String email = name.toString() + "@" + domain.toLowerCase();
+
+        log.info("RandomEmail: " + email);
+        return email;
+    }
 
     /**
      * Generates a random 9-digit Tax ID.
@@ -891,6 +911,8 @@ public class BasePage {
         return taxId;
     }
 
+
+
     public void scrollIntoView(String scrollElementLocator) {
         Element<?, ?> selectElement = getElement(scrollElementLocator);
         selectElement.scrollIntoView();
@@ -903,7 +925,7 @@ public class BasePage {
 
     public boolean isNavBarMenuVisible() {
         getWebDriver().waitForLoad(WebDriver.LoadType.DOMCONTENTLOADED);
-        getWebDriver().switchToFrames(LOCATOR_PARTY_IFRAME);
+      //  getWebDriver().switchToFrames(LOCATOR_PARTY_IFRAME);
         return isElementPresent(LOCATOR_NAVBAR_MENUS);
     }
 
@@ -943,21 +965,21 @@ public class BasePage {
         }
     }
 
-    public void clickParty() {
-        performNavigation(LOCATOR_PARTY_IFRAME, LOCATOR_PARTY_BUTTON, "Party", LOCATOR_CREATE_PERSON_LINK);
-    }
-
-    public void clickHierarchy() {
-        performNavigation(LOCATOR_PARTY_IFRAME, LOCATOR_HIERARCHY_BUTTON, "Hierarchy", LOCATOR_NEW_HIERARCHY);
-    }
-
-    public void clickDcmAdmin() {
-        performNavigation(LOCATOR_PARTY_IFRAME, LOCATOR_DCM_ADMIN_BUTTON, "Dcm admin", LOCATOR_DCM_ADMIN_SEARCH_BUTTON);
-    }
-
-    public void clickCompensation(){
-        performNavigation(LOCATOR_PARTY_IFRAME, LOCATOR_COMPENSATION_BUTTON, "Compensation", LOCATOR_COMPENSATION_SEARCH_BUTTON);
-    }
+//    public void clickParty() {
+//        performNavigation(LOCATOR_PARTY_IFRAME, LOCATOR_PARTY_BUTTON, "Party", LOCATOR_CREATE_PERSON_LINK);
+//    }
+//
+//    public void clickHierarchy() {
+//        performNavigation(LOCATOR_PARTY_IFRAME, LOCATOR_HIERARCHY_BUTTON, "Hierarchy", LOCATOR_NEW_HIERARCHY);
+//    }
+//
+//    public void clickDcmAdmin() {
+//        performNavigation(LOCATOR_PARTY_IFRAME, LOCATOR_DCM_ADMIN_BUTTON, "Dcm admin", LOCATOR_DCM_ADMIN_SEARCH_BUTTON);
+//    }
+//
+//    public void clickCompensation(){
+//        performNavigation(LOCATOR_PARTY_IFRAME, LOCATOR_COMPENSATION_BUTTON, "Compensation", LOCATOR_COMPENSATION_SEARCH_BUTTON);
+//    }
 
     public void clickContractKit() {
         int attempts = 0;
@@ -1025,4 +1047,6 @@ public class BasePage {
         getWebDriver().switchToFrames(FRAME_CONTAINER, FRAME_CACHE2, FRAME_PROP_PAGE);
         clickElement(LOCATOR_SAVE_BUTTON, "Save button");
     }
+
+
 }
