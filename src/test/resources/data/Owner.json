@@ -6,8 +6,8 @@
   "owner": {
     "firstName": "FirstName",
     "lastName": "LastName",
-    "email": "Email",
-    "alternativeEmail": "Alternative Email",
+    "email": "property1@yopmail.com",
+    "alternativeEmail": "property2@yopmail.com",
     "address1": "11 car street",
     "city": "Chennai",
     "state": "Grand Cayman",
