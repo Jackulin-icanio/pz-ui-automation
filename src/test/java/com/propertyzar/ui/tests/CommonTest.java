@@ -1,3 +1,14 @@
+/*
+ *
+ * Copyright (c) 2025 Propertyzar, Inc.
+ *     All rights reserved.
+ *
+ *     This software and its documentation are confidential and proprietary
+ *     information of Propertyzar, Inc. Unauthorized use, duplication,
+ *     or distribution is strictly prohibited.
+ *
+ */
+
 package com.propertyzar.ui.tests;
 import com.propertyzar.ui.pages.owner.OwnerPage;
 import com.propertyzar.ui.pages.properties.PropertiesPage;
@@ -38,15 +49,6 @@ public class CommonTest {
         return ownerName;
     }
 
-    public static void deleteProperty(PropertiesPage propertiesPage, String propertyName) {
-        propertiesPage.clickPropertiesMenu(propertyName);
-        propertiesPage.clickDelete();
-        propertiesPage.clickConfirm();
-        String actualSuccessMsg = propertiesPage.retrieveToastMessage();
-        Assert.assertEquals(actualSuccessMsg, PropertiesPage.EXPECTED_MSG_FOR_VALIDATE, "Validation...Errors/Warnings Occurred");
-        Assert.assertTrue(propertiesPage.isPropertyNameVisible(propertyName));
-    }
-
     public static void deleteOwner(OwnerPage ownerPage, String ownerName) {
         ownerPage.clickOwnersMenu(ownerName);
         ownerPage.clickDelete();
@@ -54,5 +56,14 @@ public class CommonTest {
         String actualSuccessMsg = ownerPage.retrieveToastMessage();
         Assert.assertEquals(actualSuccessMsg, OwnerPage.EXPECTED_MSG_FOR_VALIDATE, "Validation...Errors/Warnings Occurred");
         Assert.assertTrue(ownerPage.isOwnerNameVisible(ownerName));
+    }
+
+    public static void deleteProperty(PropertiesPage propertiesPage, String propertyName) {
+        propertiesPage.clickPropertiesMenu(propertyName);
+        propertiesPage.clickDelete();
+        propertiesPage.clickConfirm();
+        String actualSuccessMsg = propertiesPage.retrieveToastMessage();
+        Assert.assertEquals(actualSuccessMsg, PropertiesPage.EXPECTED_MSG_FOR_VALIDATE, "Validation...Errors/Warnings Occurred");
+        Assert.assertTrue(propertiesPage.isPropertyNameVisible(propertyName));
     }
 }
