@@ -1,0 +1,16 @@
+{
+  "login": {
+    "email": "pzdevtest@yopmail.com",
+    "password": "login.password"
+  },
+  "owner": {
+    "firstName": "Property",
+    "lastName": "Zar",
+    "email": "property11@yopmail.com",
+    "alternativeEmail": "property21@yopmail.com",
+    "address1": "11 car street",
+    "city": "Chennai",
+    "state": "Grand Cayman",
+    "zip": "600678"
+  }
+}

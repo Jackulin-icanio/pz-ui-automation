@@ -1,4 +1,4 @@
-package com.propertyzar.ui.pages.Ownerpage;
+package com.propertyzar.ui.pages.owner;
 import com.propertyzar.ui.base.WebDriver;
 import com.propertyzar.ui.pages.BasePage;
 

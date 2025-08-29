@@ -113,4 +113,8 @@ public class Config {
 
     @PropertyKey(ENV_PREFIX + "owner-json-file")
     private String ownerFile;
+
+    @PropertyKey(ENV_PREFIX + "invoice-json-file")
+    private String invoiceFile;
+
 }

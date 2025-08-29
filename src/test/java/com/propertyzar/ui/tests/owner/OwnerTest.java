@@ -1,5 +1,5 @@
-package com.propertyzar.ui.tests.Owner;
-import com.propertyzar.ui.pages.Ownerpage.OwnerPage;
+package com.propertyzar.ui.tests.owner;
+import com.propertyzar.ui.pages.owner.OwnerPage;
 import com.propertyzar.ui.pages.login.LoginPage;
 import com.propertyzar.ui.tests.BaseTest;
 import com.propertyzar.ui.tests.CommonTest;

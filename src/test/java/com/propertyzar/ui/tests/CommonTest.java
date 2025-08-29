@@ -1,5 +1,5 @@
 package com.propertyzar.ui.tests;
-import com.propertyzar.ui.pages.Ownerpage.OwnerPage;
+import com.propertyzar.ui.pages.owner.OwnerPage;
 import com.propertyzar.ui.pages.properties.PropertiesPage;
 import lombok.extern.slf4j.Slf4j;
 import com.propertyzar.ui.pages.login.LoginPage;

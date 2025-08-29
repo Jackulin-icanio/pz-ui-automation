@@ -1,6 +1,6 @@
 package com.propertyzar.ui.tests.properties;
 
-import com.propertyzar.ui.pages.Ownerpage.OwnerPage;
+import com.propertyzar.ui.pages.owner.OwnerPage;
 import com.propertyzar.ui.pages.login.LoginPage;
 import com.propertyzar.ui.pages.properties.PropertiesPage;
 import com.propertyzar.ui.tests.BaseTest;
@@ -74,6 +74,7 @@ public class PropertiesTest extends BaseTest {
     }
     @AfterClass
     public void tearDown() {
+
         CommonTest.deleteProperty(propertiesPage,propertyName);
     }
 }

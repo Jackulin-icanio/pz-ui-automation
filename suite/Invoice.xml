@@ -8,15 +8,15 @@
   ~   or distribution is strictly prohibited.
   -->
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Owner" verbose="1">
+<suite name="Invoice" verbose="1">
     <listeners>
         <listener class-name="com.propertyzar.ui.listeners.TestListener" />
         <listener class-name="com.propertyzar.ui.listeners.SuiteRetryAnalyzer" />
     </listeners>
-    <parameter name="suite-file" value="suite/Owner.xml"/>
-    <test name="Owner Test">
+    <parameter name="suite-file" value="suite/Invoice.xml"/>
+    <test name="Invoice Test">
         <classes>
-            <class name="com.propertyzar.ui.tests.owner.OwnerTest" />
+            <class name="com.propertyzar.ui.tests.invoice.InvoiceTest" />
         </classes>
     </test>
 </suite>
