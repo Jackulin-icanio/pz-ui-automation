@@ -1,12 +1,10 @@
 package com.propertyzar.ui.tests.Owner;
-import com.propertyzar.ui.base.WebDriver;
 import com.propertyzar.ui.pages.Ownerpage.OwnerPage;
 import com.propertyzar.ui.pages.login.LoginPage;
 import com.propertyzar.ui.tests.BaseTest;
 import com.propertyzar.ui.tests.CommonTest;
 
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -38,19 +36,15 @@ public class OwnerTest extends BaseTest {
         CommonTest.login(OwnerData.getLoginData(),loginPage);
     }
 
-    @Test(testName = "Owner Creation",dataProvider = OwnerData.CREATE_DATA, dataProviderClass = OwnerData.class,  priority = 1)
+    @Test(testName = "Owner Creation",dataProvider = OwnerData.CREATE_OWNER_DATA, dataProviderClass = OwnerData.class,  priority = 1)
     public void createOwner(String firstName,String lastName,String email,String alternativeEmail,String address1,String city,String state,String zip) {
         try {
             ownerPage.clickOwnersSideNav();
             ownerPage.clickNewOwnerButton();
-            String randomlyFirstName = ownerPage.randomName(firstName, "First Name");
-            ownerPage.enterFirstName(randomlyFirstName);
-            String randomlyLastName = ownerPage.randomName(lastName, "Last Name");
-            ownerPage.enterLastName(randomlyLastName);
-            String randomEmail = ownerPage.randomEmail(email, "yopmail.com");
-            ownerPage.enterEmail(randomEmail);
-            String randomAlternativeEmail = ownerPage.randomEmail(alternativeEmail, "yopmail.com");
-            ownerPage.enterAlternativeEmail(randomAlternativeEmail);
+            ownerPage.enterFirstName(firstName);
+            ownerPage.enterLastName(lastName);
+            ownerPage.enterEmail(email);
+            ownerPage.enterAlternativeEmail(alternativeEmail);
             ownerPage.enterAddress1(address1);
             ownerPage.enterCity(city);
             ownerPage.selectState(state);
@@ -58,8 +52,8 @@ public class OwnerTest extends BaseTest {
             ownerPage.clickSave();
             Assert.assertTrue(ownerPage.isPopupVisible(), "Credential Popup is not displayed");
             ownerPage.clickYes();
-            Assert.assertTrue(ownerPage.isMessageVisible(), "Toast Message is not displayed");
-
+            Assert.assertTrue(ownerPage.isOwnerHomePageVisible(), "Owner Home Page is not displayed");
+            Assert.assertTrue(ownerPage.isCreatedOwnerNameVisible(firstName,lastName),"Created owner name is not visible");
 
         } catch (Exception e) {
             fail(e);

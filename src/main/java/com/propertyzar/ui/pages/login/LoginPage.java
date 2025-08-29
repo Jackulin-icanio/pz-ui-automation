@@ -36,7 +36,7 @@ public class LoginPage extends BasePage {
         setTextElement(LOCATOR_USER_NAME, email, "Email");
     }
 
-    public boolean isMessageVisible() {
+    public boolean isLoginSuccessMessageVisible() {
         return isElementPresent(LOCATOR_LOGIN_MESSAGE_VISIBLE);
     }
 

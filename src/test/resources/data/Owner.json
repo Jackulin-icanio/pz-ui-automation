@@ -3,15 +3,14 @@
     "email": "pzdevtest@yopmail.com",
     "password": "login.password"
   },
-  "owner" : {
-    "firstName" : "FirstName",
-     "lastName" : "LastName",
-      "email" : "Email",
-       "alternativeEmail" : "Alternative Email",
+  "owner": {
+    "firstName": "FirstName",
+    "lastName": "LastName",
+    "email": "Email",
+    "alternativeEmail": "Alternative Email",
     "address1": "11 car street",
     "city": "Chennai",
     "state": "Grand Cayman",
     "zip": "600678"
-
   }
 }

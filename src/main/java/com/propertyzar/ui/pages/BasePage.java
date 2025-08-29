@@ -11,6 +11,9 @@ package com.propertyzar.ui.pages;
 
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
+import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.WaitForSelectorState;
 import com.propertyzar.ui.ConfigManager;
 import com.propertyzar.ui.base.Element;
 import com.propertyzar.ui.base.WebDriver;
@@ -34,38 +37,6 @@ public class BasePage {
     private static final String VERIFY_CHECKED_STATE = "checked";
     private static final int DEFAULT_TIMEOUT = Integer.parseInt(ConfigManager.getConfig().getDefaultTimeOut());
     private static final int TIMEOUT = Integer.parseInt(ConfigManager.getConfig().getTimeOut());
-
-    public static final String LOCATOR_PARTY_BUTTON = "ul.navbar-nav.top-nav li a#Party span";
-//    public static final String LOCATOR_PARTY_IFRAME = "frame[name='navbar']";
-    public static final String LOCATOR_NAVBAR_MENUS = "//ul[@id='navigation']//li/a[@id='Party']";
-
-    public static final String FRAME_CONTAINER = "frame[name='container']";
-    public static final String FRAME_CACHE = "iframe[name='cacheframe0']";
-    public static final String FRAME_NOCACHE_FRAME = "iframe[name='nocacheframe']";
-    public static final String FRAME_SUBPAGE = "frame[name='subpage']";
-    public static final String LOCATOR_CREATE_PERSON_LINK = "//a[@id= 'Button_Person_Main_NewPerson']";
-    public static final String LOCATOR_HIERARCHY_BUTTON = "//ul[@id='navigation']//span[text()='Hierarchy']";
-    public static final String LOCATOR_NEW_HIERARCHY = "//*[@id='Button_HierarchySearch_NewHierarchy']";
-    public static final String LOCATOR_DCM_ADMIN_BUTTON = "//ul[@id='navigation']//span[text()='DCM Admin']";
-    public static final String LOCATOR_DCM_ADMIN_SEARCH_BUTTON = "//*[@id= 'Search_Audit_AuditInfo_SearchFormDiv']//*[text()= 'Search']";
-    public static final String LOCATOR_COMPENSATION_BUTTON = "//ul[@id='navigation']//span[text()='Compensation']";
-    public static final String LOCATOR_COMPENSATION_SEARCH_BUTTON = "//*[@id= 'Search_Schedules_Main_SearchFormDiv']//*[text()= 'Search']";
-    private static final String FRAME_SIDE_BAR = "frame[name='sidebar']";
-    private static final String LOCATOR_CONTRACT_KIT = "//a[@id='Contracts_sub']";
-    private static final String LOCATOR_SUB_SUPPORTING_DATA = "//a[@id= 'SupportingData_sub']";
-    private static final String LOCATOR_LEFT_SIDE_NAVE_BAR = "//*[@id=\"sideMenu\"]//li";
-    private static final String LOCATOR_CONTRACT_KIT_INFO = "//ul[@id= 'sideMenu']//a[@id= 'Tab_Contracts_Main_BasicInfo_link']";
-    private static final String LOCATOR_SUB_PRODUCT_SEARCH_FRAME = "frame[name='sidebar']";
-    private static final String LOCATOR_SUB_PRODUCT_SEARCH = "//a[@id='ProductHierarchySearch_sub']";
-    private static final String LOCATOR_VALIDATE_BUTTON = "//*[@id='validate']";
-    private static final String LOCATOR_VALIDATE_BUTTON_LI = "//ul[@class='nav nav-pills btn-nav navbar-left']/li[3]";
-    private static final String LOCATOR_CANCEL_BUTTON = "//a[@id='cancel']";
-    private static final String LOCATOR_SAVE_BUTTON = "//a[@id= 'save']";
-    public static final String FRAME_PROP_PAGE = "frame[name='proppage']";
-    public static final String FRAME_CACHE2 = "iframe[name='cacheframe2']";
-    public static final String FRAME_SEARCH = "iframe[name='NewSchedule_Product_Picker_search_div_frame']";
-
-
 
     @Getter
     private final WebDriver<?> webDriver;
@@ -331,30 +302,6 @@ public class BasePage {
      * @param field         Field name for logging
      * @throws DCMException if element click fails
      */
-//    public void clickElement(String xpath,
-//                             Element.ExpectedConditions expConditions,
-//                             int timeout,
-//                             String field) {
-//        validateXpath(xpath);
-//        validateExpConditions(expConditions);
-//        validateTimeout(timeout);
-//        validateField(field);
-//
-//        try {
-//            ExtentTest testNode = Optional.ofNullable(getCurrentTestReportNode())
-//                    .orElseThrow(() -> new IllegalStateException("Test report node is not set"));
-//
-//            webDriver.clickElement(testNode, xpath,
-//                    expConditions,
-//                    timeout,
-//                    field
-//            );
-//            log.info("Clicked element: {}", field);
-//        } catch (Exception e) {
-//            log.error("Failed to click element: {} with xpath: {}", field, xpath, e);
-//            throw new DCMException("Element click failed for: " + field, e);
-//        }
-//    }
 
     public void clickElement(String xpath,
                              Element.ExpectedConditions expConditions,
@@ -370,7 +317,6 @@ public class BasePage {
             boolean isVisible = webDriver.isElementPresent(xpath);
             if (!isVisible) {
                 log.error("Element with xpath [{}] is not visible after waiting {} ms. Field: {}", xpath, timeout, field);
-//            log.error("Page source at failure:\n{}", webDriver.getPageSource());
             }
 
             ExtentTest testNode = Optional.ofNullable(getCurrentTestReportNode())
@@ -911,40 +857,16 @@ public class BasePage {
         return taxId;
     }
 
-    public boolean isNavBarMenuVisible() {
-        getWebDriver().waitForLoad(WebDriver.LoadType.DOMCONTENTLOADED);
-      //  getWebDriver().switchToFrames(LOCATOR_PARTY_IFRAME);
-        return isElementPresent(LOCATOR_NAVBAR_MENUS);
-    }
+    public void waitForTableLoad() {
+        String tableBodyLocator = "//tbody[@data-testid='tableBody']//tr[.//td[normalize-space()!='']]";
 
-    public boolean isLeftNaveBarMenuVisible() {
-        getWebDriver().waitForLoad(WebDriver.LoadType.DOMCONTENTLOADED);
-        getWebDriver().switchToFrames(FRAME_SIDE_BAR);
-        return isElementPresent(LOCATOR_LEFT_SIDE_NAVE_BAR);
-    }
+        // Wait for table body to appear
+        isElementPresent(tableBodyLocator);
 
-    private void performNavigation(String iframeLocator, String buttonLocator, String buttonName, String subpageLocator) {
-        int attempts = 0;
-        while (attempts < MAX_RETRY_ATTEMPTS) {
-            try {
-                getWebDriver().waitForLoad(WebDriver.LoadType.DOMCONTENTLOADED);
-                getWebDriver().switchToFrames(iframeLocator);
-                isNavBarMenuVisible();
-                getWebDriver().waitForLoad(WebDriver.LoadType.DOMCONTENTLOADED);
-                clickElement(buttonLocator, buttonName);
-                getWebDriver().waitForLoad(WebDriver.LoadType.DOMCONTENTLOADED);
-                isLeftNaveBarMenuVisible();
-                getWebDriver().switchToFrames(FRAME_CONTAINER, FRAME_CACHE, FRAME_SUBPAGE);
-                isElementPresent(subpageLocator);
-                break;
-            } catch (Exception e) {
-                log.error("Error occurred in performNavigation method for {}. Attempting refresh. Attempt: {}", buttonName, attempts + 1, e);
-                refresh();
-                attempts++;
-            }
-        }
-        if (attempts == MAX_RETRY_ATTEMPTS) {
-            throw new RuntimeException("Failed to execute navigation logic for " + buttonName + " after " + MAX_RETRY_ATTEMPTS + " attempts.");
+        // Optionally check if it has rows
+        int rowCount = getElements(tableBodyLocator + " tr").size();
+        while (rowCount == 0) {
+            rowCount = getElements(tableBodyLocator + " tr").size();
         }
     }
 }

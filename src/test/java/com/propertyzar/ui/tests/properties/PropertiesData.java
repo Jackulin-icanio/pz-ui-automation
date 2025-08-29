@@ -6,12 +6,19 @@ import com.propertyzar.ui.tests.BaseData;
 public class PropertiesData extends BaseData {
 
     public static final String LOGIN_DATA = "login";
+    public static final String CREATE_OWNER_DATA ="CreateOwner";
     public static final String CREATE_PROPERTIES_DATA_SHEET = "createProperty";
 
     @org.testng.annotations.DataProvider(name = LOGIN_DATA)
     public static Object[][] getLoginData() {
         return getTestDataJSON(ConfigManager.getConfig().getPropertyFile(),
                 LOGIN_DATA);
+    }
+
+    @org.testng.annotations.DataProvider(name = CREATE_OWNER_DATA)
+    public static Object[][] getCreateOwnerData() {
+        return getTestDataJSON(ConfigManager.getConfig().getPropertyFile(),
+                CREATE_OWNER_DATA);
     }
 
     @org.testng.annotations.DataProvider(name = CREATE_PROPERTIES_DATA_SHEET)

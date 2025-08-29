@@ -33,7 +33,7 @@ public class LoginTest extends BaseTest {
             loginPage.setUserName(email);
             loginPage.setPassword(SecurityManager.getInstance().getValue(password));
             loginPage.clickLogin();
-            Assert.assertTrue(loginPage.isMessageVisible(), "Login Message is not displayed");
+            Assert.assertTrue(loginPage.isLoginSuccessMessageVisible(), "Login Message is not displayed");
             Assert.assertTrue(loginPage.isHomeScreenVisible(), "Home screen is not displayed");
         } catch (Exception e) {
             fail(e);
