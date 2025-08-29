@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2025 Trilogy, Inc.
- *   All rights reserved.
- *
- *   This software and its documentation are confidential and proprietary
- *   information of Trilogy, Inc. Unauthorized use, duplication,
- *   or distribution is strictly prohibited.
- */
-
 package com.propertyzar.ui.listeners;
 
 import com.aventstack.extentreports.ExtentTest;
@@ -118,7 +109,7 @@ public class TestListener implements ITestListener, ISuiteListener, IInvokedMeth
     @Override
     public void onFinish(ISuite suite) {
         String suiteName = ExtentManager.BASE_SUITE_NAME;
-        String dcmStackBaseUrl = ConfigManager.getDcmStackBaseUrl();
+        String BaseUrl = ConfigManager.getBaseUrl();
 
         if (Objects.isNull(suiteStartTime))
             suiteStartTime = Instant.now();
@@ -180,7 +171,7 @@ public class TestListener implements ITestListener, ISuiteListener, IInvokedMeth
         jsonReport.setFailures(totalFailed);
 
         log.info("Environment: {}", ExtentManager.ENVIRONMENT);
-        log.info("Application URL: {}", dcmStackBaseUrl);
+        log.info("Application URL: {}", BaseUrl);
         log.info("Suite Name: {}", suiteName);
         log.info("Total Test Run: {}", totalTestRun);
         log.info("Total Passed: {}", totalPassed);

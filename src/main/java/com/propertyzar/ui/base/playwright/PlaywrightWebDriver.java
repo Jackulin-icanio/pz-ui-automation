@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2025 Trilogy, Inc.
- *   All rights reserved.
- *
- *   This software and its documentation are confidential and proprietary
- *   information of Trilogy, Inc. Unauthorized use, duplication,
- *   or distribution is strictly prohibited.
- */
-
 package com.propertyzar.ui.base.playwright;
 
 import com.aventstack.extentreports.ExtentTest;
@@ -15,7 +6,7 @@ import com.microsoft.playwright.options.LoadState;
 import com.propertyzar.ui.ConfigManager;
 import com.propertyzar.ui.base.Element;
 import com.propertyzar.ui.base.WebDriver;
-import com.propertyzar.ui.exception.DCMException;
+import com.propertyzar.ui.exception.Exception;
 import lombok.extern.slf4j.Slf4j;
 
 import java.nio.file.Path;
@@ -160,11 +151,10 @@ public class PlaywrightWebDriver extends WebDriver<PlaywrightWebDriver> {
             log.info("Initializing Playwright...");
             setPlaywright();
             setBrowser();
-//            setBrowserContext();
             setPage();
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             log.error("Failed to initialize Playwright: ", e);
-            throw new DCMException("Failed to initialize Playwright", e);
+            throw new Exception("Failed to initialize Playwright", e);
         }
     }
 
@@ -235,34 +225,9 @@ public class PlaywrightWebDriver extends WebDriver<PlaywrightWebDriver> {
                 browserContext.clearCookies();
                 playwright.close();
             }
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             log.warn("Exception during teardown: ", e);
         }
-    }
-
-    @Override
-    public void switchToFrames(String... selectors) {
-        if (selectors == null || selectors.length == 0) {
-            throw new IllegalArgumentException("Selectors cannot be null or empty");
-        }
-        
-        FrameLocator temp = null;
-        for (String selector : selectors) {
-            if (selector == null || selector.isEmpty()) {
-                continue;
-            }
-            
-            if (temp == null) {
-                temp = getPage().frameLocator(selector);
-            } else {
-                temp = temp.frameLocator(selector);
-            }
-        }
-        frameLocator = temp;
-    }
-
-    public void switchToDefaultFrame() {
-        frameLocator = null;
     }
 
     @Override
@@ -280,11 +245,6 @@ public class PlaywrightWebDriver extends WebDriver<PlaywrightWebDriver> {
             return frame.locator(selector);
         }
         return getPage().locator(selector);
-    }
-
-    @Override
-    public void waitForLoad() {
-        getPage().waitForLoadState(LoadState.NETWORKIDLE);
     }
 
     @Override

@@ -1,5 +1,5 @@
 package com.propertyzar.ui.tests;
-import com.propertyzar.ui.pages.Ownerpage.OwnerPage;
+import com.propertyzar.ui.pages.owner.OwnerPage;
 import com.propertyzar.ui.pages.properties.PropertiesPage;
 import lombok.extern.slf4j.Slf4j;
 import com.propertyzar.ui.pages.login.LoginPage;
@@ -34,10 +34,10 @@ public class CommonTest {
         ownerPage.clickSave();
         Assert.assertTrue(ownerPage.isPopupVisible(), "Credential Popup is not displayed");
         ownerPage.clickYes();
-        Assert.assertTrue(ownerPage.isOwnerHomePageVisible(), "Owner Home Page is not displayed");
-        Assert.assertTrue(ownerPage.isCreatedOwnerNameVisible(firstName,lastName),"Created owner name is not visible");
+        Assert.assertTrue(ownerPage.isCreatedOwnerNameVisible(ownerName),"Created owner name is not visible");
         return ownerName;
     }
+
     public static void deleteProperty(PropertiesPage propertiesPage, String propertyName) {
         propertiesPage.clickPropertiesMenu(propertyName);
         propertiesPage.clickDelete();
@@ -45,5 +45,14 @@ public class CommonTest {
         String actualSuccessMsg = propertiesPage.retrieveToastMessage();
         Assert.assertEquals(actualSuccessMsg, PropertiesPage.EXPECTED_MSG_FOR_VALIDATE, "Validation...Errors/Warnings Occurred");
         Assert.assertTrue(propertiesPage.isPropertyNameVisible(propertyName));
+    }
+
+    public static void deleteOwner(OwnerPage ownerPage, String ownerName) {
+        ownerPage.clickOwnersMenu(ownerName);
+        ownerPage.clickDelete();
+        ownerPage.clickConfirm();
+        String actualSuccessMsg = ownerPage.retrieveToastMessage();
+        Assert.assertEquals(actualSuccessMsg, OwnerPage.EXPECTED_MSG_FOR_VALIDATE, "Validation...Errors/Warnings Occurred");
+        Assert.assertTrue(ownerPage.isOwnerNameVisible(ownerName));
     }
 }

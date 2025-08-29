@@ -1,17 +1,8 @@
-/*
- * Copyright (c) 2025 Trilogy, Inc.
- *   All rights reserved.
- *
- *   This software and its documentation are confidential and proprietary
- *   information of Trilogy, Inc. Unauthorized use, duplication,
- *   or distribution is strictly prohibited.
- */
-
 package com.propertyzar.ui;
 
 import com.propertyzar.ui.base.WebDriver;
 import com.propertyzar.ui.base.playwright.PlaywrightWebDriver;
-import com.propertyzar.ui.exception.DCMException;
+import com.propertyzar.ui.exception.Exception;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,9 +23,9 @@ public class DriverManager {
     public String captureScreenshot() {
         try {
             return captureScreenshotForPlaywright();
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             log.error("Failed to capture screenshot", e);
-            throw new DCMException(e);
+            throw new Exception(e);
         }
     }
 
@@ -43,13 +34,5 @@ public class DriverManager {
         Path screenshotPath = Paths.get("./test-output/Reports/Screenshots", screenshotFileName);
         getWebDriver().captureScreenShot(screenshotPath);
         return "Screenshots/" + screenshotFileName;
-    }
-
-    public enum AutomationExecutionType {
-        PLAYWRIGHT
-    }
-
-    public enum OperatingSystem {
-        MAC, WINDOWS, LINUX
     }
 }

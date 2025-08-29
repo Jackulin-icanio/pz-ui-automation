@@ -1,6 +1,6 @@
 package com.propertyzar.ui.tests.properties;
 
-import com.propertyzar.ui.pages.Ownerpage.OwnerPage;
+import com.propertyzar.ui.pages.owner.OwnerPage;
 import com.propertyzar.ui.pages.login.LoginPage;
 import com.propertyzar.ui.pages.properties.PropertiesPage;
 import com.propertyzar.ui.tests.BaseTest;
@@ -20,7 +20,7 @@ public class PropertiesTest extends BaseTest {
     private final PropertiesPage propertiesPage;
 
     String ownerName;
-    String propertyName;
+    String createdPropertyName;
 
     public PropertiesTest(){
         super("Properties");
@@ -54,9 +54,10 @@ public class PropertiesTest extends BaseTest {
             priority = 1)
     public void createProperty(String propertyName, String propertyType, String address1, String city, String state, String zip) {
         try {
+            createdPropertyName = propertyName;
             propertiesPage.clickLeftNav();
             propertiesPage.clickNewPropertyButton();
-            propertiesPage.enterPropertyName(propertyName);
+            propertiesPage.enterPropertyName(createdPropertyName);
             propertiesPage.selectPropertyType(propertyType);
             propertiesPage.selectOwner(ownerName);
             propertiesPage.clickOwnerPercentageSave();
@@ -66,14 +67,15 @@ public class PropertiesTest extends BaseTest {
             propertiesPage.enterZip(zip);
             propertiesPage.clickSave();
             Assert.assertTrue(propertiesPage.isPropertyCreatedMessageVisible(), "Property is not created");
-            Assert.assertTrue(propertiesPage.isCreatedPropertyNameVisible(propertyName));
+            Assert.assertTrue(propertiesPage.isCreatedPropertyNameVisible(createdPropertyName));
 
         } catch (Exception e) {
             fail(e);
         }
     }
+
     @AfterClass
     public void tearDown() {
-        CommonTest.deleteProperty(propertiesPage,propertyName);
+        CommonTest.deleteProperty(propertiesPage, createdPropertyName);
     }
 }

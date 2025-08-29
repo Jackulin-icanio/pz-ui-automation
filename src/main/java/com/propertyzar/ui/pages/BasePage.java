@@ -1,23 +1,11 @@
-/*
- * Copyright (c) 2025 Trilogy, Inc.
- *   All rights reserved.
- *
- *   This software and its documentation are confidential and proprietary
- *   information of Trilogy, Inc. Unauthorized use, duplication,
- *   or distribution is strictly prohibited.
- */
-
 package com.propertyzar.ui.pages;
 
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
-import com.microsoft.playwright.Locator;
-import com.microsoft.playwright.Page;
-import com.microsoft.playwright.options.WaitForSelectorState;
 import com.propertyzar.ui.ConfigManager;
 import com.propertyzar.ui.base.Element;
 import com.propertyzar.ui.base.WebDriver;
-import com.propertyzar.ui.exception.DCMException;
+import com.propertyzar.ui.exception.Exception;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -64,7 +52,7 @@ public class BasePage {
      *
      * @param fieldName Field name to convert
      * @return Converted locator string
-     * @throws DCMException if conversion fails
+     * @throws Exception if conversion fails
      */
     public static String convertIntoLocator(String fieldName) {
         if (fieldName == null || fieldName.isEmpty()) {
@@ -73,30 +61,9 @@ public class BasePage {
 
         try {
             return fieldName.toLowerCase().replace(" ", "_");
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             log.error("Failed to convert field name to locator: {}", fieldName, e);
-            throw new DCMException("Locator conversion failed", e);
-        }
-    }
-
-    /**
-     * Converts a field name to a locator by replacing spaces with hyphens and
-     * converting to lowercase.
-     *
-     * @param fieldName Field name to convert
-     * @return Converted locator string
-     * @throws DCMException if conversion fails
-     */
-    public static String convertIntoLocatorUsingHyphen(String fieldName) {
-        if (fieldName == null || fieldName.isEmpty()) {
-            throw new IllegalArgumentException("Field name cannot be null or empty");
-        }
-
-        try {
-            return fieldName.toLowerCase().replace(" ", "-");
-        } catch (Exception e) {
-            log.error("Failed to convert field name to hyphenated locator: {}", fieldName, e);
-            throw new DCMException("Hyphenated locator conversion failed", e);
+            throw new Exception("Locator conversion failed", e);
         }
     }
 
@@ -117,26 +84,13 @@ public class BasePage {
     }
 
     /**
-     * Gets an element with specified expected conditions and default wait type and timeout
-     *
-     * @param xpath         XPath locator for the element
-     * @param expConditions Expected conditions for waiting
-     * @return Element instance
-     */
-    public Element<?, ?> getElement(String xpath, Element.ExpectedConditions expConditions) {
-        validateXpath(xpath);
-        validateExpConditions(expConditions);
-        return getElement(xpath, expConditions, TIMEOUT);
-    }
-
-    /**
      * Gets an element with specified parameters
      *
      * @param xpath         XPath locator for the element
      * @param expConditions Expected conditions for waiting
      * @param timeout       Timeout in seconds
      * @return Element instance
-     * @throws DCMException if element retrieval fails
+     * @throws Exception if element retrieval fails
      */
     public Element<?, ?> getElement(String xpath, Element.ExpectedConditions expConditions,
                                     int timeout) {
@@ -149,9 +103,9 @@ public class BasePage {
                     .orElseThrow(() -> new IllegalStateException("Test report node is not set"));
 
             return webDriver.getElement(testNode, xpath, expConditions, timeout);
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             log.error("Failed to get element with xpath: {}", xpath, e);
-            throw new DCMException("Element retrieval failed for xpath: " + xpath, e);
+            throw new Exception("Element retrieval failed for xpath: " + xpath, e);
         }
     }
 
@@ -172,7 +126,7 @@ public class BasePage {
      * @param xpath   XPath locator for the elements
      * @param timeout Timeout in seconds
      * @return List of Element instances
-     * @throws DCMException if elements retrieval fails
+     * @throws Exception if elements retrieval fails
      */
     public List<Element<?, ?>> getElements(String xpath,
                                            int timeout) {
@@ -184,9 +138,9 @@ public class BasePage {
                     .orElseThrow(() -> new IllegalStateException("Test report node is not set"));
 
             return webDriver.getElements(testNode, xpath, timeout);
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             log.error("Failed to get elements with xpath: {}", xpath, e);
-            throw new DCMException("Elements retrieval failed for xpath: " + xpath, e);
+            throw new Exception("Elements retrieval failed for xpath: " + xpath, e);
         }
     }
 
@@ -204,29 +158,9 @@ public class BasePage {
 
         try {
             return webDriver.isElementPresent(xpath);
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             log.error("Failed to check element presence: {}", xpath, e);
             return false;
-        }
-    }
-
-    /**
-     * Navigates to the specified URL
-     *
-     * @param url URL to navigate to
-     * @throws DCMException if navigation fails
-     */
-    public void navigateURL(String url) {
-        if (url == null || url.isEmpty()) {
-            throw new IllegalArgumentException("URL cannot be null or empty");
-        }
-
-        try {
-            webDriver.navigateURL(url);
-            log.info("Navigated to URL: {}", url);
-        } catch (Exception e) {
-            log.error("Failed to navigate to URL: {}", url, e);
-            throw new DCMException("Navigation failed to URL: " + url, e);
         }
     }
 
@@ -246,7 +180,7 @@ public class BasePage {
                 testNode.info(infoMsg);
             }
             log.info(infoMsg);
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             log.error("Failed to log info message: {}", infoMsg, e);
         }
     }
@@ -272,7 +206,7 @@ public class BasePage {
                 testNode.log(status, msg);
             }
             log.info("Logged message with status {}: {}", status, msg);
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             log.error("Failed to log message: {}", msg, e);
         }
     }
@@ -300,7 +234,7 @@ public class BasePage {
      * @param expConditions Expected conditions for waiting
      * @param timeout       Timeout in seconds
      * @param field         Field name for logging
-     * @throws DCMException if element click fails
+     * @throws Exception if element click fails
      */
 
     public void clickElement(String xpath,
@@ -329,9 +263,9 @@ public class BasePage {
             String afterClickUrl = webDriver.getCurrentUrl();
             log.info("Current URL after click: {}", afterClickUrl);
 
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             log.error("Failed to click element: {} with xpath: {}", field, xpath, e);
-            throw new DCMException("Element click failed for: " + field, e);
+            throw new Exception("Element click failed for: " + field, e);
         }
     }
     /**
@@ -365,7 +299,7 @@ public class BasePage {
      * @param text          Text to set
      * @param fieldName     Field name for logging
      * @return true if text was set successfully, false otherwise
-     * @throws DCMException if text setting fails
+     * @throws Exception if text setting fails
      */
     public boolean setTextElement(String xpath,
                                   Element.ExpectedConditions expConditions,
@@ -393,39 +327,9 @@ public class BasePage {
                 log.warn("Failed to set text [{}] in element: {}", text, fieldName);
             }
             return isSet;
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             log.error("Failed to set text [{}] in element: {} with xpath: {}", text, fieldName, xpath, e);
-            throw new DCMException("Text setting failed for: " + fieldName, e);
-        }
-    }
-
-    public boolean setTextElement(String xpath,
-                                  int timeout,
-                                  String text,
-                                  String fieldName) {
-        validateXpath(xpath);
-        validateTimeout(timeout);
-        validateField(fieldName);
-
-        try {
-            ExtentTest testNode = Optional.ofNullable(getCurrentTestReportNode())
-                    .orElseThrow(() -> new IllegalStateException("Test report node is not set"));
-
-            boolean isSet = webDriver.setTextElement(testNode, xpath,
-                    Element.ExpectedConditions.PRESENCE_OF_ELEMENT_LOCATED,
-                    timeout,
-                    text,
-                    fieldName
-            );
-            if (isSet) {
-                log.info("Set text [{}] in element: {}", text, fieldName);
-            } else {
-                log.warn("Failed to set text [{}] in element: {}", text, fieldName);
-            }
-            return isSet;
-        } catch (Exception e) {
-            log.error("Failed to set text [{}] in element: {} with xpath: {}", text, fieldName, xpath, e);
-            throw new DCMException("Text setting failed for: " + fieldName, e);
+            throw new Exception("Text setting failed for: " + fieldName, e);
         }
     }
 
@@ -449,31 +353,13 @@ public class BasePage {
     }
 
     /**
-     * Gets text from an element with specified expected conditions and default wait type
-     *
-     * @param xpath         XPath locator for the element
-     * @param expConditions Expected conditions for waiting
-     * @return Text from the element
-     */
-    public String getText(String xpath,
-                          Element.ExpectedConditions expConditions) {
-        validateXpath(xpath);
-        validateExpConditions(expConditions);
-
-        return getText(xpath,
-                expConditions,
-                TIMEOUT
-        );
-    }
-
-    /**
      * Gets text from an element with specified parameters
      *
      * @param xpath         XPath locator for the element
      * @param expConditions Expected conditions for waiting
      * @param timeout       Timeout in seconds
      * @return Text from the element
-     * @throws DCMException if text retrieval fails
+     * @throws Exception if text retrieval fails
      */
     public String getText(String xpath,
                           Element.ExpectedConditions expConditions,
@@ -492,150 +378,9 @@ public class BasePage {
             );
             info("Fetched text: " + retrieveText);
             return retrieveText;
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             log.error("Failed to get text from element with xpath: {}", xpath, e);
-            throw new DCMException("Text retrieval failed for xpath: " + xpath, e);
-        }
-    }
-
-    /**
-     * Clicks an element
-     *
-     * @param element Element to click
-     * @param field   Field name for logging
-     * @throws DCMException if element click fails
-     */
-    public void clickElement(Element<?, ?> element, String field) {
-        validateElement(element);
-        validateField(field);
-
-        try {
-            webDriver.clickElement(element, field);
-            log.info("Clicked element: {}", field);
-        } catch (Exception e) {
-            log.error("Failed to click element: {}", field, e);
-            throw new DCMException("Element click failed for: " + field, e);
-        }
-    }
-
-    /**
-     * Sets text in an element
-     *
-     * @param element   Element to set text in
-     * @param text      Text to set
-     * @param fieldName Field name for logging
-     * @throws DCMException if text setting fails
-     */
-    public void setTextElement(Element<?, ?> element, String text, String fieldName) {
-        validateElement(element);
-        validateField(fieldName);
-
-        try {
-            webDriver.setTextElement(element, text, fieldName);
-            log.info("Set text [{}] in element: {}", text, fieldName);
-        } catch (Exception e) {
-            log.error("Failed to set text [{}] in element: {}", text, fieldName, e);
-            throw new DCMException("Text setting failed for: " + fieldName, e);
-        }
-    }
-
-    /**
-     * Checks if an element is not present
-     *
-     * @param xpath XPath locator for the element
-     * @return true if the element is not present, false otherwise
-     */
-    public boolean isElementNotPresent(String xpath) {
-        if (xpath == null || xpath.isEmpty()) {
-            log.warn("XPath is null or empty in isElementNotPresent");
-            return false;
-        }
-
-        try {
-            boolean isDisplayedElement = isElementInvisible(xpath);
-
-            if (isDisplayedElement) {
-                String message = String.format("PASS: Checked element [%s] is not present", xpath);
-                log(Status.INFO, message);
-                return true;
-            } else {
-                String message = String.format("FAIL: Element [%s] is present on the screen!", xpath);
-                log(Status.FAIL, message);
-                return false;
-            }
-        } catch (Exception e) {
-            log.error("Failed to check element absence: {}", xpath, e);
-            return false;
-        }
-    }
-
-    /**
-     * Checks if an element is enabled with default wait type, expected conditions, and timeout
-     *
-     * @param xpath XPath locator for the element
-     * @return true if the element is enabled, false otherwise
-     */
-    public boolean isEnabled(String xpath) {
-        validateXpath(xpath);
-        return isEnabled(xpath,
-                DEFAULT_TIMEOUT
-        );
-    }
-
-    public boolean isEnabled(String xpath, int timeout) {
-        validateXpath(xpath);
-
-        return isEnabled(xpath,
-                timeout
-        );
-    }
-
-    /**
-     * Checks if an element is enabled with specified wait type and expected conditions
-     *
-     * @param xpath         XPath locator for the element
-     * @param expConditions Expected conditions for waiting
-     * @return true if the element is enabled, false otherwise
-     */
-    public boolean isEnabled(String xpath,
-                             Element.ExpectedConditions expConditions) {
-        validateXpath(xpath);
-        validateExpConditions(expConditions);
-
-        return isEnabled(xpath,
-                expConditions,
-                DEFAULT_TIMEOUT
-        );
-    }
-
-    /**
-     * Checks if an element is enabled with specified parameters
-     *
-     * @param xpath         XPath locator for the element
-     * @param expConditions Expected conditions for waiting
-     * @param timeout       Timeout in seconds
-     * @return true if the element is enabled, false otherwise
-     */
-    public boolean isEnabled(String xpath,
-                             Element.ExpectedConditions expConditions,
-                             int timeout) {
-        validateXpath(xpath);
-        validateExpConditions(expConditions);
-        validateTimeout(timeout);
-
-        try {
-            ExtentTest testNode = Optional.ofNullable(getCurrentTestReportNode())
-                    .orElseThrow(() -> new IllegalStateException("Test report node is not set"));
-
-            boolean enabled = webDriver.isEnabled(testNode, xpath,
-                    expConditions,
-                    timeout
-            );
-            info("Element enabled state: " + enabled);
-            return enabled;
-        } catch (Exception e) {
-            log.error("Failed to check element enabled state for xpath: {}", xpath, e);
-            return false;
+            throw new Exception("Text retrieval failed for xpath: " + xpath, e);
         }
     }
 
@@ -657,24 +402,9 @@ public class BasePage {
                     MID_LEVEL_TIMEOUT);
             log(Status.INFO, "Element is not visible");
             return true;
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             log(Status.INFO, "Element is still visible");
             return false;
-        }
-    }
-
-    /**
-     * Refreshes the page
-     *
-     * @throws DCMException if page refresh fails
-     */
-    public void refresh() {
-        try {
-            webDriver.refresh();
-            log.info("Page refreshed successfully");
-        } catch (Exception e) {
-            log.error("Failed to refresh page", e);
-            throw new DCMException("Page refresh failed", e);
         }
     }
 
@@ -683,7 +413,7 @@ public class BasePage {
      *
      * @param dropdownXpath XPath locator for the dropdown
      * @param dropdownData  Data to select
-     * @throws DCMException if dropdown selection fails
+     * @throws Exception if dropdown selection fails
      */
     public void selectDropdownData(String dropdownXpath, String dropdownDataXpath, String dropdownData) {
         validateXpath(dropdownXpath);
@@ -696,59 +426,9 @@ public class BasePage {
             String xPath = String.format(LOCATOR_DROPDOWN_DATA, dropdownDataXpath, dropdownData);
             clickElement(xPath, "Dropdown Data");
             log.info("Selected dropdown data: {}", dropdownData);
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             log.error("Failed to select dropdown data: {} from dropdown: {}", dropdownData, dropdownXpath, e);
-            throw new DCMException("Dropdown selection failed for: " + dropdownData, e);
-        }
-    }
-
-    /**
-     * Selects an element (checks if not already checked)
-     *
-     * @param selectElementLocator XPath locator for the element
-     * @throws DCMException if element selection fails
-     */
-    public void selectElement(String selectElementLocator) {
-        validateXpath(selectElementLocator);
-
-        try {
-            Element<?, ?> selectElement = getElement(selectElementLocator);
-            clickElement(selectElementLocator, "Select Element");
-
-            // Check if element is selected after first click
-            String elementState = selectElement.getAttribute("checked");
-            if (!Objects.equals(elementState, VERIFY_CHECKED_STATE)) {
-                // If not selected, click again
-                clickElement(selectElementLocator, "Select Element");
-
-                // Verify selection after second click
-                elementState = selectElement.getAttribute("checked");
-                if (!Objects.equals(elementState, VERIFY_CHECKED_STATE)) {
-                    log.warn("Element still not selected after second click: {}", selectElementLocator);
-                }
-            }
-
-            log.info("Selected element: {}", selectElementLocator);
-        } catch (Exception e) {
-            log.error("Failed to select element: {}", selectElementLocator, e);
-            throw new DCMException("Element selection failed for: " + selectElementLocator, e);
-        }
-    }
-
-    /**
-     * Gets the current URL and logs it
-     *
-     * @return The current URL
-     * @throws DCMException if URL retrieval fails
-     */
-    public String getCurrentUrl() {
-        try {
-            String url = webDriver.getCurrentUrl();
-            log.info("Current URL: {}", url);
-            return url;
-        } catch (Exception e) {
-            log.error("Failed to get current URL", e);
-            throw new DCMException("URL retrieval failed", e);
+            throw new Exception("Dropdown selection failed for: " + dropdownData, e);
         }
     }
 
@@ -797,76 +477,6 @@ public class BasePage {
     private void validateField(String field) {
         if (field == null || field.isEmpty()) {
             throw new IllegalArgumentException("Field name cannot be null or empty");
-        }
-    }
-
-    /**
-     * Validates that an element is not null
-     *
-     * @param element Element to validate
-     * @throws IllegalArgumentException if element is null
-     */
-    private void validateElement(Element<?, ?> element) {
-        if (element == null) {
-            throw new IllegalArgumentException("Element cannot be null");
-        }
-    }
-
-    /**
-     * Generates a random name by appending a UUID-based suffix to the given prefix.
-     *
-     * @param name   The base name (not used for generation, kept for compatibility).
-     * @param prefix The prefix to be attached before the random suffix.
-     * @return A randomly generated name with the given prefix.
-     */
-    public String randomName(String name, String prefix) {
-        name = prefix + UUID.randomUUID().toString().substring(0, 6);
-        log.info("RandomName: " + name);
-        return name;
-    }
-    public String randomEmail(String prefix, String domain) {
-        String letters = "abcdefghijklmnopqrstuvwxyz";
-        Random random = new Random();
-
-        // Random name length between 6–10
-        int length = 6 + random.nextInt(5);
-        StringBuilder name = new StringBuilder();
-
-        for (int i = 0; i < length; i++) {
-            name.append(letters.charAt(random.nextInt(letters.length())));
-        }
-
-        // Optionally append random number for uniqueness
-        name.append(random.nextInt(100));
-
-        String email = name.toString() + "@" + domain.toLowerCase();
-
-        log.info("RandomEmail: " + email);
-        return email;
-    }
-
-    /**
-     * Generates a random 9-digit Tax ID.
-     *
-     * @return A randomly generated integer representing a Tax ID.
-     */
-    public int randomTaxID() {
-        Random random = new Random();
-        int taxId = 100_000_000 + random.nextInt(900_000_000);
-        log.info("TaxId: " + taxId);
-        return taxId;
-    }
-
-    public void waitForTableLoad() {
-        String tableBodyLocator = "//tbody[@data-testid='tableBody']//tr[.//td[normalize-space()!='']]";
-
-        // Wait for table body to appear
-        isElementPresent(tableBodyLocator);
-
-        // Optionally check if it has rows
-        int rowCount = getElements(tableBodyLocator + " tr").size();
-        while (rowCount == 0) {
-            rowCount = getElements(tableBodyLocator + " tr").size();
         }
     }
 }

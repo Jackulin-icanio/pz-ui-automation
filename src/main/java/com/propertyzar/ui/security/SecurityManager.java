@@ -1,17 +1,8 @@
-/*
- * Copyright (c) 2025 Trilogy, Inc.
- *   All rights reserved.
- *
- *   This software and its documentation are confidential and proprietary
- *   information of Trilogy, Inc. Unauthorized use, duplication,
- *   or distribution is strictly prohibited.
- */
-
 package com.propertyzar.ui.security;
 
 import com.propertyzar.ui.ConfigManager;
 import com.propertyzar.ui.data.reader.DataReader;
-import com.propertyzar.ui.exception.DCMException;
+import com.propertyzar.ui.exception.Exception;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -49,8 +40,8 @@ public class SecurityManager {
         try {
             String encryptedValue = fetchEncryptedDataByKey(key);
             return encryptionManager.decrypt(encryptedValue.replace("encrypt_", ""));
-        } catch (Exception e) {
-            throw new DCMException("Failed to read the encrypted value", e);
+        } catch (java.lang.Exception e) {
+            throw new Exception("Failed to read the encrypted value", e);
         }
     }
 
@@ -78,7 +69,7 @@ public class SecurityManager {
         try {
             return new FileInputStream(ConfigManager.getConfig().getEncryptionDataPath());
         } catch (FileNotFoundException e) {
-            throw new DCMException(e);
+            throw new Exception(e);
         }
     }
 

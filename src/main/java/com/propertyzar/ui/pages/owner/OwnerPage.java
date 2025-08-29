@@ -1,8 +1,13 @@
-package com.propertyzar.ui.pages.Ownerpage;
+package com.propertyzar.ui.pages.owner;
 import com.propertyzar.ui.base.WebDriver;
 import com.propertyzar.ui.pages.BasePage;
 
 public class OwnerPage extends BasePage {
+
+    //Messages
+    public static final String EXPECTED_MSG_FOR_VALIDATE = "Owner Deleted Successfully";
+
+    //Locators
     private static final String LOCATOR_OWNERS_SIDE_NAV = "//div[@data-testid='Owners']";
     private static final String LOCATOR_NEW_OWNER = "//span[text()='New Owner']";
     private static final String LOCATOR_OWNER_TYPE = "//*[@id='ownerType' and @value='Individual']";
@@ -18,8 +23,11 @@ public class OwnerPage extends BasePage {
     private static final String LOCATOR_SAVE = "//button[span[text()='Save']]";
     private static final String LOCATOR_CREDENTIAL_POPUP = "//*[contains(@role,'dialog')]";
     private static final String LOCATOR_YES_POPUP = "//button[span[text()='Yes']]";
-    private static final String LOCATOR_OWNER_NAME_IN_TABLE = "//*[@data-testid='tableRow']//*[text()='%s %s']";
-
+    private static final String LOCATOR_OWNER_NAME_IN_TABLE = "//*[@data-testid='tableRow']//*[text()='%s']";
+    private static final String LOCATOR_OWNER_MENU = "//tr[.//p[(text()= '%s')]]//button[@id='long-button']";
+    private static final String LOCATOR_DELETE = "//div[contains(@class,'MuiPopover-root') and @aria-hidden='false']//li[@role='menuitem' and normalize-space()='Delete']";
+    private static final String LOCATOR_CONFIRM = "//*[text()='Confirm']";
+    private static final String LOCATOR_OWNER_DELETED_MESSAGE_VISIBLE = "//*[text()='Owner Deleted Successfully']";
 
     public OwnerPage(WebDriver<?> webDriver) {
         super(webDriver);
@@ -80,14 +88,33 @@ public class OwnerPage extends BasePage {
     public void clickYes() {
         clickElement(LOCATOR_YES_POPUP, "Click Yes button");
         getWebDriver().waitForLoad(WebDriver.LoadType.DOMCONTENTLOADED);
-        isOwnerHomePageVisible();
+    }
+
+    public boolean isCreatedOwnerNameVisible(String ownerName) {
+        return isElementPresent(String.format(LOCATOR_OWNER_NAME_IN_TABLE, ownerName));
+    }
+
+    public void clickOwnersMenu(String ownerName) {
+        clickElement(String.format(LOCATOR_OWNER_MENU, ownerName), "Owner Menu");
         getWebDriver().waitForLoad(WebDriver.LoadType.DOMCONTENTLOADED);
     }
 
-    public boolean isOwnerHomePageVisible() {
-        return isElementPresent(LOCATOR_NEW_OWNER);
+    public void clickDelete() {
+        clickElement(LOCATOR_DELETE, "Delete");
+        getWebDriver().waitForLoad(WebDriver.LoadType.DOMCONTENTLOADED);
     }
-    public boolean isCreatedOwnerNameVisible(String firstName, String lastName){
-        return isElementPresent(String.format(LOCATOR_OWNER_NAME_IN_TABLE,firstName,lastName));
+
+    public void clickConfirm() {
+        getWebDriver().waitForLoad(WebDriver.LoadType.DOMCONTENTLOADED);
+        clickElement(LOCATOR_CONFIRM, "Cancel");
+    }
+
+    public String retrieveToastMessage() {
+        getWebDriver().waitForLoad(WebDriver.LoadType.DOMCONTENTLOADED);
+        return getText(LOCATOR_OWNER_DELETED_MESSAGE_VISIBLE, "Validation message");
+    }
+
+    public boolean isOwnerNameVisible(String ownerName) {
+        return isElementInvisible(String.format(LOCATOR_OWNER_NAME_IN_TABLE, ownerName));
     }
 }

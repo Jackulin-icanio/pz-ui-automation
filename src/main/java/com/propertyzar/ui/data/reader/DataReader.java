@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2025 Trilogy, Inc.
- *   All rights reserved.
- *
- *   This software and its documentation are confidential and proprietary
- *   information of Trilogy, Inc. Unauthorized use, duplication,
- *   or distribution is strictly prohibited.
- */
-
 package com.propertyzar.ui.data.reader;
 
 import java.io.InputStream;
@@ -23,9 +14,6 @@ public interface DataReader {
 
         public static DataReader getInputReader(InputReaderType type) {
             return new ExcelReader();
-
         }
-
-
     }
 }

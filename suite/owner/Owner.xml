@@ -16,7 +16,7 @@
     <parameter name="suite-file" value="suite/Owner.xml"/>
     <test name="Owner Test">
         <classes>
-            <class name="com.propertyzar.ui.tests.Owner.OwnerTest" />
+            <class name="com.propertyzar.ui.tests.owner.OwnerTest" />
         </classes>
     </test>
 </suite>

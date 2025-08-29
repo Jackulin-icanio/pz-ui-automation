@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2025 Trilogy, Inc.
- *   All rights reserved.
- *
- *   This software and its documentation are confidential and proprietary
- *   information of Trilogy, Inc. Unauthorized use, duplication,
- *   or distribution is strictly prohibited.
- */
-
 package com.propertyzar.ui.base;
 
 import com.aventstack.extentreports.ExtentTest;
@@ -146,13 +137,7 @@ public abstract class WebDriver<T> {
 
     public abstract void refresh();
 
-    public abstract void switchToFrames(String... selectors);
-
-    public abstract void switchToDefaultFrame();
-
     public abstract String getCurrentUrl();
-
-    public abstract void waitForLoad();
 
     public abstract void waitForLoad(LoadType loadType);
 
@@ -167,5 +152,4 @@ public abstract class WebDriver<T> {
         DOMCONTENTLOADED,
         NETWORKIDLE
     }
-
 }

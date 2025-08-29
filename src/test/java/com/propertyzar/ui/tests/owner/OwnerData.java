@@ -1,4 +1,4 @@
-package com.propertyzar.ui.tests.Owner;
+package com.propertyzar.ui.tests.owner;
 import com.propertyzar.ui.ConfigManager;
 import com.propertyzar.ui.tests.BaseData;
 

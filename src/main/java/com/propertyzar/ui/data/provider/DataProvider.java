@@ -1,14 +1,4 @@
-/*
- * Copyright (c) 2025 Trilogy, Inc.
- *   All rights reserved.
- *
- *   This software and its documentation are confidential and proprietary
- *   information of Trilogy, Inc. Unauthorized use, duplication,
- *   or distribution is strictly prohibited.
- */
-
 package com.propertyzar.ui.data.provider;
-
 
 import com.propertyzar.ui.data.reader.DataReader;
 import com.propertyzar.ui.data.reader.ExcelReader;
@@ -35,11 +25,6 @@ public abstract class DataProvider {
         return reader.getInputData(this.inputStream);
     }
 
-    public Object[][] getInputData() {
-        DataReader reader = getInputReader(null);
-        return reader.getInputData(this.inputStream);
-    }
-
     private DataReader getInputReader(String sheetName) {
         if (Objects.requireNonNull(type) == DataReader.InputReaderType.EXCEL) {
             return new ExcelReader(sheetName);
@@ -49,5 +34,4 @@ public abstract class DataProvider {
         }
         return new ExcelReader(sheetName);
     }
-
 }

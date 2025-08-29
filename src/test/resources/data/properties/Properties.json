@@ -4,17 +4,17 @@
     "password": "login.password"
   },
   "CreateOwner": {
-    "firstName": "FirstName",
-    "lastName": "LastName",
-    "email": "mail@yopmail.com",
-    "alternativeEmail": "alternative@yopmail.com",
+    "firstName": "F_Name",
+    "lastName": "L_Name",
+    "email": "mail.z@yopmail.com",
+    "alternativeEmail": "cd@yopmail.com",
     "address1": "11 car street",
     "city": "Chennai",
     "state": "Grand Cayman",
     "zip": "600678"
   },
   "createProperty": {
-    "propertyName": "Property Name1",
+    "propertyName": "z_Property",
     "propertyType": "Commercial",
     "address1": "11 car street",
     "city": "Chennai",

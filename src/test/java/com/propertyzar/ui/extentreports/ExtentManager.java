@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2025 Trilogy, Inc.
- *   All rights reserved.
- *
- *   This software and its documentation are confidential and proprietary
- *   information of Trilogy, Inc. Unauthorized use, duplication,
- *   or distribution is strictly prohibited.
- */
-
 package com.propertyzar.ui.extentreports;
 
 import com.aventstack.extentreports.AnalysisStrategy;
@@ -40,27 +31,11 @@ public class ExtentManager {
     }
 
     public synchronized static ExtentReports createExtentReports() {
-        String reportFileName = "DCM Automation Testing Report";
+        String reportFileName = "Propertyzar Automation Testing Report";
         ExtentReports extentReports = new ExtentReports();
         ExtentSparkReporter reporter = new ExtentSparkReporter(REPORT_PATH);
         reporter.config().setReportName(reportFileName);
 
-        // Handling null config file scenario
-
-//        File extentConfigFile = null;
-//        if (ConfigManager.getConfig() != null && ConfigManager.getConfig().getExtentConfig() != null) {
-//            extentConfigFile = new File(ConfigManager.getConfig().getExtentConfig());
-//        }
-//
-//        if (extentConfigFile != null && extentConfigFile.exists()) {
-//            try {
-//                reporter.loadXMLConfig(extentConfigFile);
-//            } catch (IOException e) {
-//                log.error("Error loading Extent XML config: {}", e.getMessage());
-//            }
-//        } else {
-//            log.warn("Extent XML config file is missing or not specified in ConfigManager.");
-//        }
         // JavaScript Injection for UI Fix (Optional)
         String jsScript = "var firstElem = document.evaluate(\"//h6[text()='Test'] //following::div\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;"
                 + "var text = document.evaluate(\"//a[@id='nav-test']\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;"
@@ -71,17 +46,5 @@ public class ExtentManager {
         extentReports.setAnalysisStrategy(AnalysisStrategy.SUITE);
 
         return extentReports;
-    }
-
-    public static String getCurrentDateTime() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
-        Date date = new Date();
-        return dateFormat.format(date);
-    }
-
-    public static String getCurrentDate() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = new Date();
-        return dateFormat.format(date);
     }
 }

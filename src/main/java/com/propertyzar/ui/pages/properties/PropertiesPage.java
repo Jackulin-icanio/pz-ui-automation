@@ -5,8 +5,12 @@ import com.propertyzar.ui.pages.BasePage;
 
 public class PropertiesPage extends BasePage {
 
+    //Messages
     public static final String EXPECTED_MSG_FOR_VALIDATE = "Property Deleted Successfully";
+
+    //Locators
     private static final String LOCATOR_PROPERTIES_LEFT_NAV = "(//*[@data-testid='Properties'])[1]";
+    private static final String LOCATOR_PROPERTIES_MENU = "//*[contains(@class,'mui-10egq61')]//*[text()='Properties']";
     private static final String LOCATOR_NEW_PROPERTY = "//*[(text()='New Property')]";
     private static final String LOCATOR_PROPERTY_NAME = "[data-testid='propertyName']";
     private static final String LOCATOR_PROPERTY_TYPE = "[id='propertyType']";
@@ -21,8 +25,8 @@ public class PropertiesPage extends BasePage {
     private static final String LOCATOR_ZIP = "[id='zipCode']";
     private static final String LOCATOR_SAVE = "[name='Save']";
     private static final String LOCATOR_PROPERTY_CREATED_MESSAGE_VISIBLE = "//*[text()='Property Saved Successfully']";
-    private static final String LOCATOR_PROPERTY_NAME_IN_TABLE = "//*[@data-testid='tableRow']//*[text()='Property Name1']";
-    private static final String LOCATOR_PROPERTY_MENU = "//tr[.//p[(text()= 'Property Name1')]]//button[@id='long-button']";
+    private static final String LOCATOR_PROPERTY_NAME_IN_TABLE = "//*[@data-testid='tableRow']//*[text()='%s']";
+    private static final String LOCATOR_PROPERTY_MENU = "//tr[.//p[(text()= '%s')]]//button[@id='long-button']";
     private static final String LOCATOR_DELETE = "//*[contains(@class,'MuiPopover-root') and not(@aria-hidden='true')]//li[@role='menuitem' and normalize-space(.)='Delete']";
     private static final String LOCATOR_CONFIRM = "//*[text()='Confirm']";
     private static final String LOCATOR_PROPERTY_DELETED_MESSAGE_VISIBLE = "//*[text()='Property Deleted Successfully']";
@@ -32,9 +36,10 @@ public class PropertiesPage extends BasePage {
     }
 
     public void clickLeftNav() {
-
         getWebDriver().refresh();
         clickElement(LOCATOR_PROPERTIES_LEFT_NAV, "Properties Left Navigation");
+        getWebDriver().waitForLoad(WebDriver.LoadType.DOMCONTENTLOADED);
+        clickElement(LOCATOR_PROPERTIES_MENU,"Properties Menu");
         getWebDriver().waitForLoad(WebDriver.LoadType.DOMCONTENTLOADED);
         isElementPresent(LOCATOR_NEW_PROPERTY);
     }

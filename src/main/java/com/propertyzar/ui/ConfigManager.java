@@ -1,17 +1,3 @@
-/*
- * Copyright (c) 2025 Trilogy, Inc.
- *   All rights reserved.
- *
- *   This software and its documentation are confidential and proprietary
- *   information of Trilogy, Inc. Unauthorized use, duplication,
- *   or distribution is strictly prohibited.
- */
-
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package com.propertyzar.ui;
 
 import com.propertyzar.ui.base.Config;
@@ -45,14 +31,6 @@ public class ConfigManager {
         }
 
         return config;
-    }
-
-    public static boolean isMacOs() {
-        return DriverManager.OperatingSystem.MAC.name().equals(getConfig().getOperatingSystem());
-    }
-
-    public static boolean isPlaywrightAutomation() {
-        return DriverManager.AutomationExecutionType.PLAYWRIGHT.name().equals(getConfig().getAutomationType());
     }
 
     private static Config loadProperties() {
@@ -130,7 +108,7 @@ public class ConfigManager {
         return obj;
     }
 
-    public static String getDcmStackBaseUrl() {
+    public static String getBaseUrl() {
         if (baseUrl == null) {
             String key = String.format("com.propertyzar.ui.config.%s-base-url", environment);
             baseUrl = System.getProperty(key.replace("\\.", "_"));

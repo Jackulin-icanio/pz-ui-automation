@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2025 Trilogy, Inc.
- *   All rights reserved.
- *
- *   This software and its documentation are confidential and proprietary
- *   information of Trilogy, Inc. Unauthorized use, duplication,
- *   or distribution is strictly prohibited.
- */
-
 package com.propertyzar.ui.base.playwright;
 
 import com.aventstack.extentreports.ExtentTest;
@@ -15,7 +6,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import com.propertyzar.ui.base.Element;
 import com.propertyzar.ui.base.WebDriver;
-import com.propertyzar.ui.exception.DCMException;
+import com.propertyzar.ui.exception.Exception;
 import lombok.extern.slf4j.Slf4j;
 
 import java.nio.file.Path;
@@ -46,7 +37,7 @@ public class PlaywrightElement extends Element<PlaywrightWebDriver, Locator> {
      * @param xpath The xpath to locate elements
      * @param timeout The maximum time to wait in milliseconds
      * @return List of Locator objects representing found elements
-     * @throws DCMException if detection fails for reasons other than element not found
+     * @throws Exception if detection fails for reasons other than element not found
      */
     private static List<Locator> detectElements(WebDriver<PlaywrightWebDriver> webDriver, String xpath, Element.ExpectedConditions expConditions, int timeout) {
         if (webDriver == null) {
@@ -66,7 +57,7 @@ public class PlaywrightElement extends Element<PlaywrightWebDriver, Locator> {
                     .setTimeout(timeout)
             );
             return locator.all();
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             if (e instanceof IllegalArgumentException) {
                 throw e;
             }
@@ -109,7 +100,7 @@ public class PlaywrightElement extends Element<PlaywrightWebDriver, Locator> {
         try {
             List<Locator> elements = detectElements(webDriver, locator, ExpectedConditions.VISIBILITY_OF_ALL_ELEMENTS_LOCATED, timeout);
             return elements.stream().anyMatch(Locator::isVisible);
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             log.debug("Exception checking for element presence: {}", locator, e);
             return false;
         }
@@ -128,22 +119,11 @@ public class PlaywrightElement extends Element<PlaywrightWebDriver, Locator> {
     }
 
     @Override
-    public String getInnerText() {
-        validateElement();
-        try {
-            return element.innerText();
-        } catch (Exception e) {
-            log.error("Failed to get inner text", e);
-            return "";
-        }
-    }
-
-    @Override
     public String getText() {
         validateElement();
         try {
             return element.textContent();
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             log.error("Failed to get text content", e);
             return "";
         }
@@ -169,11 +149,11 @@ public class PlaywrightElement extends Element<PlaywrightWebDriver, Locator> {
             }
 
 
-    } catch (Exception e) {
+    } catch (java.lang.Exception e) {
             String message = "Failed to set text: " + text;
             log.error(message, e);
             this.etTest.log(Status.FAIL, message + ": " + e.getMessage());
-            throw new DCMException(message, e);
+            throw new Exception(message, e);
         }
     }
 
@@ -190,7 +170,7 @@ public class PlaywrightElement extends Element<PlaywrightWebDriver, Locator> {
             }
             
             return element.toString();
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             return "unknown";
         }
     }
@@ -206,12 +186,12 @@ public class PlaywrightElement extends Element<PlaywrightWebDriver, Locator> {
                 webDriver.waitForLoad(WebDriver.LoadType.DOMCONTENTLOADED);
                 this.etTest.log(Status.INFO, logMessage);
                 return; // Exit if click is successful
-            } catch (Exception e) {
+            } catch (java.lang.Exception e) {
                 log.warn("Attempt {} to click element failed: {}", attempt, e.getMessage());
                 if (attempt == retryCount) {
                     log.error("Failed to click element after {} attempts", retryCount, e);
                     this.etTest.log(Status.INFO, "Failed to click element: " + e.getMessage());
-                    throw new DCMException("Failed to click element", e);
+                    throw new Exception("Failed to click element", e);
                 }
             }
         }
@@ -219,11 +199,11 @@ public class PlaywrightElement extends Element<PlaywrightWebDriver, Locator> {
         try {
             webDriver.evaluate("element => element.click()", element);
             log.info("Clicked element with JavaScript");
-        } catch (Exception jsException) {
+        } catch (java.lang.Exception jsException) {
             String message = "Failed JavaScript click";
             log.error(message, jsException);
             this.etTest.log(Status.FAIL, message);
-            throw new DCMException(message, jsException);
+            throw new Exception(message, jsException);
         }
     }
 
@@ -233,16 +213,11 @@ public class PlaywrightElement extends Element<PlaywrightWebDriver, Locator> {
     }
 
     @Override
-    public void click(String logMessage) {
-        performClick(logMessage);
-    }
-
-    @Override
     public boolean isDisplayed() {
         try {
             validateElement();
             return element.isVisible();
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             log.debug("Exception checking if element is displayed", e);
             return false;
         }
@@ -253,119 +228,9 @@ public class PlaywrightElement extends Element<PlaywrightWebDriver, Locator> {
         try {
             validateElement();
             return element.isEnabled();
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             log.debug("Exception checking if element is enabled", e);
             return false;
-        }
-    }
-
-    @Override
-    public boolean isSelected() {
-        try {
-            validateElement();
-            return element.isChecked();
-        } catch (Exception e) {
-            log.debug("Exception checking if element is selected", e);
-            return false;
-        }
-    }
-
-    @Override
-    public void hover() {
-        validateElement();
-        try {
-            element.hover();
-        } catch (Exception e) {
-            String message = "Failed to hover over the element";
-            log.error(message, e);
-            throw new DCMException(message, e);
-        }
-    }
-
-    @Override
-    public void hover(int xOffset, int yOffset) {
-        validateElement();
-        try {
-            // Playwright doesn't directly support hover with offset, but we can use evaluate
-            // to implement custom hover with offset
-            webDriver.evaluate(
-                    "([element, x, y]) => { " +
-                            "const rect = element.getBoundingClientRect(); " +
-                            "const centerX = rect.left + rect.width / 2 + x; " +
-                            "const centerY = rect.top + rect.height / 2 + y; " +
-                            "const event = new MouseEvent('mouseover', { " +
-                            "  bubbles: true, " +
-                            "  clientX: centerX, " +
-                            "  clientY: centerY " +
-                            "}); " +
-                            "element.dispatchEvent(event); " +
-                            "}", 
-                    List.of(element, xOffset, yOffset)
-            );
-        } catch (Exception e) {
-            String message = "Failed to hover with offset";
-            log.error(message, e);
-            throw new DCMException(message, e);
-        }
-    }
-
-    @Override
-    public void upload(String filePath) {
-        validateElement();
-        if (filePath == null || filePath.isEmpty()) {
-            throw new IllegalArgumentException("File path cannot be null or empty");
-        }
-        
-        try {
-            Path path = Paths.get(filePath);
-            element.setInputFiles(path);
-            log.info("Uploaded file: {}", filePath);
-            this.etTest.log(Status.INFO, "File uploaded: " + filePath);
-        } catch (Exception e) {
-            String message = "Failed to upload file: " + filePath;
-            log.error(message, e);
-            this.etTest.log(Status.FAIL, message);
-            throw new DCMException(message, e);
-        }
-    }
-
-    @Override
-    public void clickElementWithJS() {
-        validateElement();
-        try {
-            webDriver.evaluate("element => element.click()", element);
-            log.info("Clicked element with JavaScript");
-        } catch (Exception e) {
-            String message = "Failed JavaScript click";
-            log.error(message, e);
-            this.etTest.log(Status.FAIL, message);
-            throw new DCMException(message, e);
-        }
-    }
-
-    @Override
-    public void sendKeysByPassingKeyboardShortcutKeys(String shortcutKey) {
-        if (shortcutKey == null || shortcutKey.isEmpty()) {
-            throw new IllegalArgumentException("Shortcut key cannot be null or empty");
-        }
-        webDriver.sendKeysByPassingKeyboardShortcutKeys(shortcutKey);
-    }
-
-    @Override
-    public String getCssValue(String propertyName) {
-        validateElement();
-        if (propertyName == null || propertyName.isEmpty()) {
-            throw new IllegalArgumentException("Property name cannot be null or empty");
-        }
-        
-        try {
-            return (String) webDriver.evaluate(
-                    "([element, prop]) => window.getComputedStyle(element).getPropertyValue(prop)",
-                    List.of(element, propertyName)
-            );
-        } catch (Exception e) {
-            log.error("Failed to get CSS value for property: {}", propertyName, e);
-            return "";
         }
     }
 
@@ -378,41 +243,9 @@ public class PlaywrightElement extends Element<PlaywrightWebDriver, Locator> {
         
         try {
             return element.getAttribute(name);
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             log.error("Failed to get attribute: {}", name, e);
             return "";
-        }
-    }
-
-    /**
-     * Scrolls the element into view
-     */
-    public void scrollIntoView() {
-        validateElement();
-        try {
-            element.scrollIntoViewIfNeeded();
-            log.debug("Scrolled element into view");
-        } catch (Exception e) {
-            String message = "Failed to scroll element into view";
-            log.error(message, e);
-            throw new DCMException(message, e);
-        }
-    }
-
-    /**
-     * Clears text from the element
-     */
-    public void clearText() {
-        validateElement();
-        try {
-            element.fill("");
-            log.info("Cleared text from element [{}]", getElementIdentifier());
-            this.etTest.log(Status.INFO, "Cleared text from element");
-        } catch (Exception e) {
-            String message = "Failed to clear text";
-            log.error(message, e);
-            this.etTest.log(Status.FAIL, message);
-            throw new DCMException(message, e);
         }
     }
 
@@ -427,29 +260,22 @@ public class PlaywrightElement extends Element<PlaywrightWebDriver, Locator> {
                     element
             );
             log.debug("Scrolled element from left to right");
-        } catch (Exception e) {
+        } catch (java.lang.Exception e) {
             String message = "Failed to scroll from left to right";
             log.error(message, e);
-            throw new DCMException(message, e);
+            throw new Exception(message, e);
         }
     }
 
     /**
-     * Scroll element to the rightmost position
-     */
-    public void scrollIntoRight() {
-        scrollFromLeftToRight(); // Same implementation in Playwright
-    }
-    
-    /**
      * Validates that the element is not null
-     * @throws DCMException if element is null
+     * @throws Exception if element is null
      */
     private void validateElement() {
         if (element == null) {
             String message = "Element is null or not found";
             log.error(message);
-            throw new DCMException(message);
+            throw new Exception(message);
         }
     }
 

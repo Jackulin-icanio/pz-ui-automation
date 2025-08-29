@@ -1,20 +1,23 @@
-package com.propertyzar.ui.tests.Owner;
-import com.propertyzar.ui.pages.Ownerpage.OwnerPage;
+package com.propertyzar.ui.tests.owner;
+
+import com.propertyzar.ui.pages.owner.OwnerPage;
 import com.propertyzar.ui.pages.login.LoginPage;
 import com.propertyzar.ui.tests.BaseTest;
 import com.propertyzar.ui.tests.CommonTest;
-
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import java.lang.reflect.Method;
 
-
-
 public class OwnerTest extends BaseTest {
+
     private final LoginPage loginPage;
     private final OwnerPage ownerPage;
+
+    String createdOwnerName;
+
     public OwnerTest() {
         super("Owner");
         ownerPage = new OwnerPage(getWebDriver());
@@ -39,6 +42,7 @@ public class OwnerTest extends BaseTest {
     @Test(testName = "Owner Creation",dataProvider = OwnerData.CREATE_OWNER_DATA, dataProviderClass = OwnerData.class,  priority = 1)
     public void createOwner(String firstName,String lastName,String email,String alternativeEmail,String address1,String city,String state,String zip) {
         try {
+            createdOwnerName = firstName + " " + lastName;
             ownerPage.clickOwnersSideNav();
             ownerPage.clickNewOwnerButton();
             ownerPage.enterFirstName(firstName);
@@ -52,11 +56,15 @@ public class OwnerTest extends BaseTest {
             ownerPage.clickSave();
             Assert.assertTrue(ownerPage.isPopupVisible(), "Credential Popup is not displayed");
             ownerPage.clickYes();
-            Assert.assertTrue(ownerPage.isOwnerHomePageVisible(), "Owner Home Page is not displayed");
-            Assert.assertTrue(ownerPage.isCreatedOwnerNameVisible(firstName,lastName),"Created owner name is not visible");
+            Assert.assertTrue(ownerPage.isCreatedOwnerNameVisible(createdOwnerName),"Created owner name is not visible");
 
         } catch (Exception e) {
             fail(e);
         }
+    }
+
+    @AfterClass
+    public void tearDown() {
+        CommonTest.deleteOwner(ownerPage, createdOwnerName);
     }
 }

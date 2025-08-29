@@ -4,10 +4,10 @@
     "password": "login.password"
   },
   "owner": {
-    "firstName": "FirstName",
-    "lastName": "LastName",
-    "email": "Email",
-    "alternativeEmail": "Alternative Email",
+    "firstName": "ab",
+    "lastName": "cd",
+    "email": "abbb@yopmail.com",
+    "alternativeEmail": "cd@yopmail.com",
     "address1": "11 car street",
     "city": "Chennai",
     "state": "Grand Cayman",
